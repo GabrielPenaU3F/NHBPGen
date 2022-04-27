@@ -13,7 +13,7 @@ class NHBP(ABC):
     model_params = None
     initial_state = None
 
-    def __init__(self, model_params, initial_state):
+    def __init__(self, model_params, initial_state=0):
         self.initial_state = initial_state
         self.set_number_of_parameters()
         self.check_number_of_parameters(model_params)
@@ -64,7 +64,7 @@ class NHBP(ABC):
         arrivals = self.generate_arrivals(time)
         x_times = np.concatenate(([0], arrivals, [time]))
         fig, axes = plt.subplots(figsize=(12, 5))
-        steps = np.arange(self.initial_state, len(arrivals) + 1)
+        steps = np.arange(self.initial_state, self.initial_state + len(arrivals) + 1)
         steps = np.append(steps, steps[-1])
         axes.step(x_times, steps, where='post')
         plt.show()
