@@ -11,4 +11,4 @@ class PoissonProcess(NHBP):
         self.n_of_params = 1
 
     def intensity_function(self, r, t):
-        return self.model_params[0]
+        return self.model_params
