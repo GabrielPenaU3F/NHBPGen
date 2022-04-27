@@ -60,5 +60,12 @@ class NHBP(ABC):
 
         return np.array(arrivals)
 
-    def generate_sample_path(self, time, fs):
-        pass
+    def generate_sample_path(self, time):
+        arrivals = self.generate_arrivals(time)
+        x_times = np.concatenate(([0], arrivals, [time]))
+        fig, axes = plt.subplots(figsize=(12, 5))
+        steps = np.arange(self.initial_state, len(arrivals) + 1)
+        steps = np.append(steps, steps[-1])
+        axes.step(x_times, steps, where='post')
+        plt.show()
+        return arrivals
