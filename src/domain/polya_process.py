@@ -1,4 +1,5 @@
 from domain.nhbp import NHBP
+from exceptions import ModelParametersException
 
 
 class PolyaProcess(NHBP):
@@ -12,4 +13,8 @@ class PolyaProcess(NHBP):
 
     def validate_model_parameters(self, model_params):
         alpha, beta = model_params
+        if not alpha > 0:
+            raise ModelParametersException('Polya alpha parameter must be a positive number')
+        if not beta > 0:
+            raise ModelParametersException('Polya beta parameter must be a positive number')
         return alpha, beta
