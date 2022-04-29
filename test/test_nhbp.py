@@ -2,7 +2,7 @@ import unittest
 
 from domain.poisson_process import PoissonProcess
 from domain.polya_process import PolyaProcess
-from exceptions import ModelParametersException
+from exceptions import ModelParametersException, SimulationException
 
 
 class NHBPTest(unittest.TestCase):
@@ -42,6 +42,12 @@ class NHBPTest(unittest.TestCase):
         err_msg = 'Initial state must be a positive integer'
         self.assertRaisesRegex(ModelParametersException, err_msg,
                                lambda: PolyaProcess((1, 2), initial_state=3.5))
+
+    def test_simulation_time_must_be_positive(self):
+        process = PoissonProcess(1)
+        err_msg = 'Duration of the simulation must be a positive number'
+        self.assertRaisesRegex(SimulationException, err_msg,
+                               lambda: process.generate_sample_path(time=-10))
 
 
 if __name__ == '__main__':

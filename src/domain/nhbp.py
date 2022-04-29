@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from matplotlib import pyplot as plt
 
-from exceptions import ModelParametersException
+from exceptions import ModelParametersException, SimulationException
 
 
 class NHBP(ABC):
@@ -70,6 +70,8 @@ class NHBP(ABC):
         return np.array(arrivals)
 
     def generate_sample_path(self, time):
+        if not time > 0:
+            raise SimulationException('Duration of the simulation must be a positive number')
         arrivals = self.generate_arrivals(time)
         x_times = np.concatenate(([0], arrivals, [time]))
         fig, axes = plt.subplots(figsize=(12, 5))
