@@ -17,7 +17,7 @@ class NHBPTest(unittest.TestCase):
 
     def test_polya_initial_population_is_0_if_not_specified(self):
         process = PolyaProcess((1, 2))
-        self.assertEqual(process, process.get_initial_state())
+        self.assertEqual(0, process.get_initial_state())
 
     def test_polya_initial_population_is_10_when_specified(self):
         process = PolyaProcess((1, 2), initial_state=10)

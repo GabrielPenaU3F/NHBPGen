@@ -17,7 +17,7 @@ class NHBP(ABC):
         self.initial_state = self.validate_initial_state(initial_state)
         self.set_number_of_parameters()
         self.check_number_of_parameters(model_params)
-        self.model_params = model_params
+        self.model_params = self.validate_model_parameters(model_params)
 
     @abstractmethod
     def set_number_of_parameters(self):
@@ -41,6 +41,10 @@ class NHBP(ABC):
         if not initial_state >= 0 or not isinstance(initial_state, int):
             raise ModelParametersException('Initial state must be a positive integer')
         return initial_state
+
+    @abstractmethod
+    def validate_model_parameters(self, model_params):
+        pass
 
     def generate_arrivals(self, time, show=False):
         arrivals = []
