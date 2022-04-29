@@ -1,6 +1,6 @@
 from domain.bpm_process import BPMProcess
 
-bpm = BPMProcess((1, 2.9))
+bpm = BPMProcess((1, 0.8))
 
 arrivals = bpm.generate_sample_path(20)
 
