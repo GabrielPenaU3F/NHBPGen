@@ -14,7 +14,7 @@ class NHBP(ABC):
     initial_state = None
 
     def __init__(self, model_params, initial_state=0):
-        self.initial_state = initial_state
+        self.initial_state = self.validate_initial_state(initial_state)
         self.set_number_of_parameters()
         self.check_number_of_parameters(model_params)
         self.model_params = model_params
@@ -36,6 +36,11 @@ class NHBP(ABC):
                 raise ModelParametersException('Incorrect number of parameters for this model')
         elif len(model_params) != self.n_of_params:
             raise ModelParametersException('Incorrect number of parameters for this model')
+
+    def validate_initial_state(self, initial_state):
+        if not initial_state >= 0 or not isinstance(initial_state, int):
+            raise ModelParametersException('Initial state must be a positive integer')
+        return initial_state
 
     def generate_arrivals(self, time, show=False):
         arrivals = []
