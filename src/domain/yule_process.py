@@ -1,4 +1,5 @@
 from domain.nhbp import NHBP
+from exceptions import ModelParametersException
 
 
 class YuleProcess(NHBP):
@@ -11,3 +12,8 @@ class YuleProcess(NHBP):
 
     def set_number_of_parameters(self):
         self.n_of_params = 1
+
+    def validate_model_parameters(self, model_params):
+        lambda_ = model_params
+        if not lambda_ > 0:
+            raise ModelParametersException('Yule parameter must be a positive number')
