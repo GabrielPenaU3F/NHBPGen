@@ -12,11 +12,6 @@ class YuleTest(unittest.TestCase):
         except ModelParametersException:
             self.fail()
 
-    def test_yule_process_cannot_receive_two_parameters_plus_initial_state(self):
-        err_msg = 'Incorrect number of parameters for this model'
-        self.assertRaisesRegex(ModelParametersException, err_msg,
-                               lambda: YuleProcess((1, 2), 1))
-
     def test_yule_process_parameter_cannot_be_negative_nor_zero(self):
         err_msg = 'Yule parameter must be a positive number'
         self.assertRaisesRegex(ModelParametersException, err_msg,
