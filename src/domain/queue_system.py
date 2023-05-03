@@ -1,6 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+from exceptions import UninitializedQueueException
+
 
 def queue_times(queue_tuple):
     return queue_tuple[0]
@@ -12,8 +14,9 @@ class QueueSystem:
         self.arrival_process = arrival_process
         self.service_process = service_process
         self.n_servers = n_servers
+        self.states = None
 
-    def build_queue(self, time):
+    def simulate_queue(self, time):
         arrival_times = self.arrival_process.generate_arrivals(time)
         service_times = self.determine_service_times(time)
         arr_list = ['arrival' for i in range(len(arrival_times))]
@@ -33,12 +36,12 @@ class QueueSystem:
                 new_state = current_state
             queue_states.append(tuple((queue_events[i][0], new_state)))
 
-        return queue_states
+        self.states = list(zip(*queue_states))
 
-    def simulate_queue(self, time):
-        states = self.build_queue(time)
-        unzipped_states = list(zip(*states))
-        time_points, queue_state = unzipped_states[0], unzipped_states[1]
+    def plot_queue(self, time):
+        if self.states is None:  # A.K.A. queue is not built yet
+            self.simulate_queue(time)
+        time_points, queue_state = self.states[0], self.states[1]
         plt.step(time_points, queue_state)
         plt.show()
 
@@ -48,3 +51,10 @@ class QueueSystem:
             k_server_departure = self.service_process.generate_arrivals(time)
             departures = np.concatenate((departures, k_server_departure))
         return departures
+
+    def get_final_size(self):
+        if self.states is None:
+            raise UninitializedQueueException('Queue has to be simulated first')
+        return self.states[1][-1]
+
+    # def get_average_time_in_queue(self):

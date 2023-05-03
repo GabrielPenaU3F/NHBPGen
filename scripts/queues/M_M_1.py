@@ -6,4 +6,4 @@ service_process = PoissonProcess(0.9)
 serv_number = 1
 
 q = QueueSystem(arrivals_process, service_process, serv_number)
-q.simulate_queue(20)
+q.plot_queue(20)
