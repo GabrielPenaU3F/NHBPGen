@@ -1,4 +1,4 @@
-from domain.polya_process import PolyaProcess
+from domain.processes.polya_process import PolyaProcess
 
 polya = PolyaProcess((1, 0.7))
 

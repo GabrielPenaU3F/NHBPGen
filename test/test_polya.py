@@ -1,6 +1,6 @@
 import unittest
 
-from domain.polya_process import PolyaProcess
+from domain.processes.polya_process import PolyaProcess
 from exceptions import ModelParametersException
 
 

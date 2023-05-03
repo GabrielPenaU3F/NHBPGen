@@ -1,4 +1,4 @@
-from domain.yule_process import YuleProcess
+from domain.processes.yule_process import YuleProcess
 
 yule = YuleProcess(0.5, 1)
 

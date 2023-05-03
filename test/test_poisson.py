@@ -1,6 +1,6 @@
 import unittest
 
-from domain.poisson_process import PoissonProcess
+from domain.processes.poisson_process import PoissonProcess
 from exceptions import ModelParametersException
 
 

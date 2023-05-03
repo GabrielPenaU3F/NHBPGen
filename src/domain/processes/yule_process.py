@@ -1,4 +1,4 @@
-from domain.nhbp import NHBP
+from domain.processes.nhbp import NHBP
 from exceptions import ModelParametersException
 
 

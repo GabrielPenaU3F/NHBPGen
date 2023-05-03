@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from domain.nhbp import NHBP
+from domain.processes.nhbp import NHBP
 
 
 class GPP(NHBP):

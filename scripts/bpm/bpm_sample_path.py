@@ -1,4 +1,4 @@
-from domain.bpm_process import BPMProcess
+from domain.processes.bpm_process import BPMProcess
 
 bpm = BPMProcess((1, 0.8))
 

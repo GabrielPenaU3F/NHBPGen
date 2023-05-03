@@ -1,7 +1,6 @@
 import unittest
 
-from domain.bpm_process import BPMProcess
-from domain.polya_process import PolyaProcess
+from domain.processes.bpm_process import BPMProcess
 from exceptions import ModelParametersException
 
 

@@ -1,6 +1,6 @@
 import unittest
 
-from domain.yule_process import YuleProcess
+from domain.processes.yule_process import YuleProcess
 from exceptions import ModelParametersException
 
 

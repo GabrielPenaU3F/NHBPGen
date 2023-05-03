@@ -1,7 +1,7 @@
 import unittest
 
-from domain.poisson_process import PoissonProcess
-from domain.polya_process import PolyaProcess
+from domain.processes.poisson_process import PoissonProcess
+from domain.processes.polya_process import PolyaProcess
 from exceptions import ModelParametersException, SimulationException
 
 
