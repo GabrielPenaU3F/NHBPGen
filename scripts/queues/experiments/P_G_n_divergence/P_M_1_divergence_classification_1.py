@@ -33,8 +33,16 @@ for seq in queues:
 
 # Convert to NumPy array
 X = np.array(padded_sequences)
-num_samples, max_length, num_features = X.shape
-reshaped_X = X.reshape(num_samples, max_length * num_features)
+# Separate the time index and signal value into separate arrays
+time_indexes = np.array([[pair[0] for pair in sample] for sample in X])
+signal_values = np.array([[pair[1] for pair in sample] for sample in X])
+# Reshape the time index and signal value arrays to 2D
+num_samples, max_length = time_indexes.shape
+reshaped_time_indexes = time_indexes.reshape(num_samples, max_length)
+reshaped_signal_values = signal_values.reshape(num_samples, max_length)
+
+# Concatenate the time index and signal value arrays
+reshaped_X = np.concatenate((reshaped_time_indexes, reshaped_signal_values), axis=1)
 
 kmeans = KMeans(n_clusters=2)
 kmeans.fit(reshaped_X)
