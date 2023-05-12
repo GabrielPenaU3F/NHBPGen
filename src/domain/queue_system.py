@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
 
 from exceptions import UninitializedQueueException
@@ -57,4 +58,10 @@ class QueueSystem:
             raise UninitializedQueueException('Queue has to be simulated first')
         return self.states[1][-1]
 
-    # def get_average_time_in_queue(self):
+    def export_states(self, filename=None):
+        if filename is not None:
+            data = pd.DataFrame({'time': self.states[0],
+                                 'state': self.states[1]})
+            data.to_csv(filename, index=False)
+        return self.states
+

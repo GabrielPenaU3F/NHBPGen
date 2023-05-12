@@ -36,3 +36,4 @@ class MMnTest(unittest.TestCase):
         err_msg = 'Queue has to be simulated first'
         self.assertRaisesRegex(UninitializedQueueException, err_msg,
                                lambda: q.get_final_size())
+

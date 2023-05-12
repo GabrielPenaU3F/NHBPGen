@@ -7,3 +7,8 @@ serv_number = 1
 
 q = QueueSystem(arrivals_process, service_process, serv_number)
 q.plot_queue(20)
+
+internal_history = q.export_states()
+
+
+
