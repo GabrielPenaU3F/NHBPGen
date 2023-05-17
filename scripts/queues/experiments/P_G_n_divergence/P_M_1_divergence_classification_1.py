@@ -6,6 +6,8 @@ from domain.processes.poisson_process import PoissonProcess
 from domain.processes.polya_process import PolyaProcess
 from domain.queue_system import QueueSystem
 
+# Classify with K-Means using the full signals: jump time - size
+
 arrivals_process = PolyaProcess(1, 0.9)
 service_process = PoissonProcess(0.8)
 serv_number = 1
@@ -14,7 +16,7 @@ queues = []
 fig, ax = plt.subplots(5, 5)
 for i in range(25):
     q = QueueSystem(arrivals_process, service_process, serv_number)
-    q.simulate_queue(200)
+    q.simulate_queue(1000)
     q_states = q.export_states()
     queues.append(list(tuple(zip(q_states[0], q_states[1]))))
     ax[int(i / 5)][i % 5].step(q_states[0], q_states[1])
