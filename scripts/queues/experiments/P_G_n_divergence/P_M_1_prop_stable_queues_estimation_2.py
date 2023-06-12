@@ -17,28 +17,30 @@ time = 1000
 # low R2 values correspond to stable queues, high R2 values correspond to unstable queues,
 
 queues, classif_labels = generate_dataset_of_queues(n_queues, arrival_process, service_process,
-                                                    n_servers, time, plot=True)
+                                                    n_servers, time, classif=0.5, plot=False)
 confidence = .95
 n = len(classif_labels)
 
 # Queues marked as 1
-proportion_of_one_marked_queues = classif_labels.mean()
-ic_lower_ones, ic_upper_ones = calculate_proportion_ci(proportion_of_one_marked_queues, n, confidence)
-print('Estimated probability of a queue being marked as 1: ' + str(proportion_of_one_marked_queues))
+proportion_of_stable_queues = classif_labels.mean()
+ic_lower_ones, ic_upper_ones = calculate_proportion_ci(proportion_of_stable_queues, n, confidence)
+print('Proportion of stable queues: ' + str(proportion_of_stable_queues))
 print('Confidence interval: (' + str(ic_lower_ones) + ', ' + str(ic_upper_ones) + ')')
 
 # Queues marked as 0
 classif_labels_not = np.logical_not(classif_labels).astype(int)
-proportion_of_zero_marked_queues = classif_labels_not.mean()
-ic_lower_zeros, ic_upper_zeros = calculate_proportion_ci(proportion_of_zero_marked_queues, n, confidence)
-print('Estimated probability of a queue being marked as 0: ' + str(proportion_of_zero_marked_queues))
+proportion_of_unstable_queues = classif_labels_not.mean()
+ic_lower_zeros, ic_upper_zeros = calculate_proportion_ci(proportion_of_unstable_queues, n, confidence)
+print('Proportion of unstable queues: ' + str(proportion_of_unstable_queues))
 print('Confidence interval: (' + str(ic_lower_zeros) + ', ' + str(ic_upper_zeros) + ')')
 
 # Test for the probability of queue being stable
 
 shape = beta/gamma
+rate = 1/gamma
 scale = gamma
 gamma_rv = st.gamma(shape, scale=scale)
 prob_stable = 1 - gamma_rv.sf(1)
+
 
 print('Fendicks Gamma distribution probability of stability ' + str(prob_stable))

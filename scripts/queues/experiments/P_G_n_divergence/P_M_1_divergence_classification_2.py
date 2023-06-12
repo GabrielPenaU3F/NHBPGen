@@ -8,7 +8,7 @@ from domain.queue_system import QueueSystem
 
 # Classify with K-Means using only the final size of the queues
 
-arrivals_process = PolyaProcess(1, 0.9)
+arrivals_process = PolyaProcess(0.9, 1)
 service_process = PoissonProcess(0.8)
 serv_number = 1
 
