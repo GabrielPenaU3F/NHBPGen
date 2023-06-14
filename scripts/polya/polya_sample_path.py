@@ -1,7 +1,7 @@
 from domain.processes.polya_process import PolyaProcess
 
-polya = PolyaProcess((1, 0.7))
+polya = PolyaProcess(1, 0.7)
 
-arrivals = polya.generate_sample_path(10)
+arrivals = polya.generate_sample_path(100)
 
 print(arrivals)

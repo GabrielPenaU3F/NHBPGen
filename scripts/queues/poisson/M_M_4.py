@@ -1,5 +1,5 @@
 from domain.processes.poisson_process import PoissonProcess
-from domain.queue_system import QueueSystem
+from domain.queues.queue_system import QueueSystem
 
 arrivals_process = PoissonProcess(0.7)
 service_process = PoissonProcess(0.2)

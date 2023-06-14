@@ -1,7 +1,7 @@
 import unittest
 
 from domain.processes.poisson_process import PoissonProcess
-from domain.queue_system import QueueSystem
+from domain.queues.queue_system import QueueSystem
 from exceptions import UninitializedQueueException
 
 

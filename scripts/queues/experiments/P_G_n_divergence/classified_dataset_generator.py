@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.linear_model import LinearRegression
 
-from domain.queue_system import QueueSystem
+from domain.queues.queue_system import QueueSystem
 
 
 def generate_dataset_of_queues(n_queues, arrivals_process, service_process, n_servers, time, classif='km', plot=False):

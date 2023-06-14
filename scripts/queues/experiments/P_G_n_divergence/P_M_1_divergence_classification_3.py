@@ -1,12 +1,11 @@
 import numpy as np
-import scipy
 from sklearn.cluster import KMeans
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 from domain.processes.poisson_process import PoissonProcess
 from domain.processes.polya_process import PolyaProcess
-from domain.queue_system import QueueSystem
+from domain.queues.queue_system import QueueSystem
 
 # Classify with K-Means using R^2 coefficients from a linear regression on the sample path
 

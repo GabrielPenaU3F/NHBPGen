@@ -1,8 +1,15 @@
+import numpy as np
+
 from domain.processes.nhbp import NHBP
 from exceptions import ModelParametersException
 
 
 class PoissonProcess(NHBP):
+
+    def generate_interarrival_time(self, current_state, present_time):
+        lambda_ = self.model_params
+        scale = 1/lambda_
+        return np.random.exponential(scale)
 
     # Fix the number of parameters the particular model has
     def set_number_of_parameters(self):

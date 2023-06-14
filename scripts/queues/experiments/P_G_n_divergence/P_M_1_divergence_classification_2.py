@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 from domain.processes.poisson_process import PoissonProcess
 from domain.processes.polya_process import PolyaProcess
-from domain.queue_system import QueueSystem
+from domain.queues.queue_system import QueueSystem
 
 # Classify with K-Means using only the final size of the queues
 
