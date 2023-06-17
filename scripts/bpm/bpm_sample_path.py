@@ -1,7 +1,5 @@
 from domain.processes.bpm_process import BPMProcess
 
-bpm = BPMProcess((1, 0.8))
+bpm = BPMProcess(0.5, 1)
 
-arrivals = bpm.generate_sample_path(20)
-
-print(arrivals)
+arrivals = bpm.generate_sample_path(1000)
