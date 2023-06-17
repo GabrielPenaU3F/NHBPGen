@@ -51,9 +51,8 @@ class NHBP(ABC):
         present_time = 0
         current_state = self.initial_state
         while present_time < time:
-            interarrival_time = self.generate_interarrival_time(current_state, present_time)
+            present_time = self.generate_next_arrival_time(current_state, present_time)
             current_state += 1
-            present_time += interarrival_time
             if present_time > time:
                 break
             arrivals.append(present_time)
@@ -69,7 +68,7 @@ class NHBP(ABC):
         return np.array(arrivals)
 
     @abstractmethod
-    def generate_interarrival_time(self, current_state, present_time):
+    def generate_next_arrival_time(self, current_state, present_time):
         pass
 
     def generate_sample_path(self, time):

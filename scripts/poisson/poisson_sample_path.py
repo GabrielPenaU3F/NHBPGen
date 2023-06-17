@@ -1,7 +1,5 @@
 from domain.processes.poisson_process import PoissonProcess
 
-poisson = PoissonProcess(2.9)
+poisson = PoissonProcess(1.2)
 
-arrivals = poisson.generate_sample_path(10)
-
-print(arrivals)
+arrivals = poisson.generate_sample_path(100)
