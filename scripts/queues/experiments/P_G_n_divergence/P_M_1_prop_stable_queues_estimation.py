@@ -7,7 +7,7 @@ from scripts.queues.experiments.P_G_n_divergence.classified_dataset_generator im
 from scripts.queues.experiments.P_G_n_divergence.proportion_confidence_interval import calculate_proportion_ci
 
 n_queues = 1000
-beta, gamma = 2, 0.8
+beta, gamma = 1, 0.8
 arrival_process = PolyaProcess(gamma, beta)
 service_process = PoissonProcess(1)
 n_servers = 1
