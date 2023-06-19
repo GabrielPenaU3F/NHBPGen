@@ -17,7 +17,6 @@ class GPP(NHBP):
     def set_number_of_parameters(self):
         pass
 
-
     def intensity_function(self, r, t):
         gamma, beta = self.slope, self.intercept
         return (beta + gamma * r) * self.kappa_t(t)

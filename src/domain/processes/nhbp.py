@@ -82,3 +82,6 @@ class NHBP(ABC):
         axes.step(x_times, steps, where='post')
         plt.show()
         return arrivals
+
+    def get_model_parameters(self):
+        return self.model_params

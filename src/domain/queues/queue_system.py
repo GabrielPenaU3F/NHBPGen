@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 from exceptions import UninitializedQueueException
 
@@ -42,8 +43,10 @@ class QueueSystem:
     def plot_queue(self, time):
         if self.states is None:  # A.K.A. queue is not built yet
             self.simulate_queue(time)
+        ax = plt.figure().gca()
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
         time_points, queue_state = self.states[0], self.states[1]
-        plt.step(time_points, queue_state)
+        ax.step(time_points, queue_state)
         plt.show()
 
     def determine_service_times(self, time):
