@@ -1,15 +1,15 @@
 import numpy as np
 import scipy
 
-from domain.processes.polya_process import PolyaProcess
+from domain.processes.bpm_process import BPMProcess
 from domain.queues.birth_death.birth_death_queue import BirthDeathQueue
 
 
-class BDPolyaPolyaNQueue(BirthDeathQueue):
+class BDBPMBPMNQueue(BirthDeathQueue):
 
     def __init__(self, arrival_gamma, arrival_beta, service_gamma, service_beta, n_servers=1):
-        arrival_process = PolyaProcess(arrival_gamma, arrival_beta)
-        service_process = PolyaProcess(service_gamma, service_beta)
+        arrival_process = BPMProcess(arrival_gamma, arrival_beta)
+        service_process = BPMProcess(service_gamma, service_beta)
         super().__init__(arrival_process, service_process, n_servers)
 
     def generate_next_transition_time(self, current_state, present_time):
@@ -21,8 +21,8 @@ class BDPolyaPolyaNQueue(BirthDeathQueue):
         random, k, s = args
         arrival_gamma, arrival_beta = self.arrival_process.get_model_parameters()
         service_gamma, service_beta = self.service_process.get_model_parameters()
-        first_exponent = -(arrival_beta + arrival_gamma*k)/arrival_gamma
-        second_exponent = -(service_beta + service_gamma*k)/service_gamma
-        first_factor = ((1 + arrival_gamma*t)/(1 + arrival_gamma*s)) ** first_exponent
-        second_factor = ((1 + service_gamma*t)/(1 + service_gamma*s)) ** second_exponent
+        first_exponent = -(arrival_beta + arrival_gamma*k)/arrival_beta
+        second_exponent = -(service_beta + service_gamma*k)/service_beta
+        first_factor = ((1 + arrival_beta*t)/(1 + arrival_beta*s)) ** first_exponent
+        second_factor = ((1 + service_beta*t)/(1 + service_beta*s)) ** second_exponent
         return first_factor * second_factor - (1 - random)

@@ -24,7 +24,7 @@ class NHBP(ABC):
         pass
 
     @abstractmethod
-    def intensity_function(self, r, t):
+    def intensity_function(self, k, t):
         pass
 
     def get_initial_state(self):

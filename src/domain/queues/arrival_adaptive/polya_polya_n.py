@@ -2,20 +2,20 @@ import numpy as np
 import scipy
 
 from domain.processes.polya_process import PolyaProcess
-from domain.queues.birth_death.birth_death_queue import BirthDeathQueue
+from domain.queues.arrival_adaptive.arrival_adaptive_queue import ArrivalAdaptiveQueue
 
 
-class BDPolyaPolyaNQueue(BirthDeathQueue):
+class ArrivalAdaptivePolyaPolyaNQueue(ArrivalAdaptiveQueue):
 
     def __init__(self, arrival_gamma, arrival_beta, service_gamma, service_beta, n_servers=1):
         arrival_process = PolyaProcess(arrival_gamma, arrival_beta)
         service_process = PolyaProcess(service_gamma, service_beta)
         super().__init__(arrival_process, service_process, n_servers)
 
-    def generate_next_transition_time(self, current_state, present_time):
+    def generate_next_transition_time(self, cumulative_arrivals, present_time):
         random = np.random.rand()
         return scipy.optimize.fsolve(self.implicit_inverse_cdf, x0=present_time,
-                                     args=(random, current_state, present_time))
+                                     args=(random, cumulative_arrivals, present_time))
 
     def implicit_inverse_cdf(self, t, *args):
         random, k, s = args

@@ -6,7 +6,6 @@ from exceptions import ModelParametersException
 
 class BPMProcess(GPP):
 
-
     def set_number_of_parameters(self):
         self.n_of_params = 2
 
