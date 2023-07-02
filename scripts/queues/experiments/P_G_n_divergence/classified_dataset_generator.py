@@ -35,7 +35,6 @@ def generate_dataset_of_queues(n_queues, arrivals_process, service_process, n_se
             else:
                 labels.append(0)  # Unstable queue
         labels = np.array(labels)
-        print(labels)
 
     if plot is True:
         fig, ax = plt.subplots()
