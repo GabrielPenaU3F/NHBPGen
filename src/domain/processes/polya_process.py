@@ -13,6 +13,10 @@ class PolyaProcess(GPP):
         gamma, beta = self.model_params
         return 1/(1 + gamma * t)
 
+    def Kappa_t(self, t):
+        gamma, beta = self.model_params
+        return (1/gamma) * np.log(1 + gamma * t)
+
     def validate_model_parameters(self, model_params):
         gamma, beta = model_params
         if not gamma > 0:

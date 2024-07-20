@@ -17,6 +17,10 @@ class BPM3pProcess(GPP):
         gamma, beta, rho = self.model_params
         return 1/(1 + rho * t)
 
+    def Kappa_t(self, t):
+        gamma, beta, rho = self.model_params
+        return (1/rho) * np.log(1 + rho * t)
+
     def validate_model_parameters(self, model_params):
         gamma, beta, rho = model_params
         if not gamma > 0:
