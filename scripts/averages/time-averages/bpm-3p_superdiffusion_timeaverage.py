@@ -1,25 +1,25 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from domain.calculators.ensemble_averager import EnsembleAverager
+from domain.averagers.time_averager import TimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 
-bpm3p = BPM3pProcess(0.5, 1, 1)
+bpm3p = BPM3pProcess(0.75, 1, 1)
 
-averager = EnsembleAverager()
-N = 1000
-T = 1000
+averager = TimeAverager()
+window_length = 100
+T = 10000
 step_length = 1
-average = averager.average(bpm3p, N, T, step_length)
+average = averager.average(bpm3p, T, window_length, step_length)
 
-t = np.linspace(0, T, int(T/step_length))
+t = np.linspace(0, window_length*step_length, window_length)
 mv = bpm3p.mean_value(t)
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(t, average, label='Ensemble average (N=1000)')
-ax.plot(t, mv, color='red', linestyle='--', label='Mean value')
+ax.plot(t, average, label='Time average (Win length = 100)')
+# ax.plot(t, mv, color='red', linestyle='--', label='Mean value')
 
-ax.set_title('Ensemble average (normal diffusion)', fontsize=14)
+ax.set_title('Time average (superdiffusion)', fontsize=14)
 ax.set_xlabel('t', fontsize=11)
 ax.xaxis.set_tick_params(labelsize=10)
 ax.xaxis.labelpad = 4
@@ -36,3 +36,4 @@ ax.legend(fontsize=12)
 fig.tight_layout()
 
 plt.show()
+

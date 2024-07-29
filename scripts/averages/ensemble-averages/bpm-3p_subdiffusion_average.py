@@ -1,10 +1,10 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from domain.calculators.ensemble_averager import EnsembleAverager
+from domain.averagers.ensemble_averager import EnsembleAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 
-bpm3p = BPM3pProcess(1, 1, 1)
+bpm3p = BPM3pProcess(0.25, 1, 1)
 
 averager = EnsembleAverager()
 N = 1000
@@ -19,7 +19,7 @@ fig, ax = plt.subplots(figsize=(8, 5))
 ax.plot(t, average, label='Ensemble average (N=1000)')
 ax.plot(t, mv, color='red', linestyle='--', label='Mean value')
 
-ax.set_title('Ensemble average (ballistic diffusion)', fontsize=14)
+ax.set_title('Ensemble average (subdiffusion)', fontsize=14)
 ax.set_xlabel('t', fontsize=11)
 ax.xaxis.set_tick_params(labelsize=10)
 ax.xaxis.labelpad = 4
