@@ -6,7 +6,7 @@ from domain.extra_functions import extra_functions
 class EnsembleAverager:
 
     # N is the total of simulations to run
-    # T is the totsl time units to simulate
+    # T is the total time units to simulate
     # step_length is how often we look at the values, in time units. Default is 1
     def average(self, model, N, T, step_length=1):
         arrival_times_ensemble = self.generate_ensemble(model, N, T)
