@@ -9,7 +9,7 @@ class TimeAverager:
     def average(self, model, T, window_length, step_length=1):
         states = extra_functions.create_normalized_sample_path(model, T, step_length)
         chunked_array = np.array(extra_functions.chunk_array(states, window_length))
-        return np.mean(chunked_array, axis=0)
+        return np.mean(chunked_array, axis=0).tolist()
 
     # delta should be a multiple of step length. Step length is recommended to be 1 to avoid issues
     def tamsd(self, model, T, delta, step_length=1):
