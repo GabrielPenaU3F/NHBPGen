@@ -10,9 +10,9 @@ bpm3p = BPM3pProcess(0.25, 1, 1)
 averager = EnsembleTimeAverager()
 window_length = 100
 N = 100
-T = 10000
+T = 1000
 time_step = 1
-delta_max = 1000
+delta_max = 100
 delta_axis = np.arange(1, delta_max + 1)
 absavg_delta = []
 
