@@ -21,7 +21,7 @@ class PureBirth(NHBP):
     def validate_model_parameters(self, model_params):
         pass
 
-    def generate_interarrival_time(self, current_state, present_time):
+    def generate_next_arrival_time(self, current_state, present_time):
         updated_lambda = self.intensity_function(current_state, -1)
         scale = 1/updated_lambda
         return np.random.exponential(scale)

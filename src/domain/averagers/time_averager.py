@@ -9,24 +9,18 @@ from domain.extra_functions import extra_functions
 
 class TimeAverager:
 
-    strategies = {}
+    strategies = {
+        'regular': RegularAveragingStrategy,
+        'abs': AbsoluteAveragingStrategy,
+        'abs-vel': AbsoluteVelocityAveragingStrategy,
+    }
 
-    def __init__(self):
-        self.strategies = {
-            'regular': RegularAveragingStrategy,
-            'abs': AbsoluteAveragingStrategy,
-            'abs-vel': AbsoluteVelocityAveragingStrategy,
-        }
-
-    # Window length is measured in samples, i.e., multiples of time_step
-    def average(self, model, T, time_step=1, average_type='regular'):
-        states = extra_functions.create_normalized_sample_path(model, T, time_step)
-
+    def average(self, states_sample_path, T, time_step=1, average_type='regular'):
         strategy_class = self.strategies.get(average_type)
         if not strategy_class:
             raise ValueError(f"Unknown average type: {average_type}")
 
-        return strategy_class().calculate(states, T, time_step)
+        return strategy_class().calculate(states_sample_path, T, time_step)
 
     # delta should be a multiple of time step.
     def tamsd(self, model, T, delta, time_step=1):

@@ -71,18 +71,6 @@ class NHBP(ABC):
     def generate_next_arrival_time(self, current_state, present_time):
         pass
 
-    def generate_sample_path(self, time, plot=True):
-        if not time > 0:
-            raise SimulationException('Duration of the simulation must be a positive number')
-        arrivals = self.generate_arrivals(time)
-        if plot is True:
-            x_times = np.concatenate(([0], arrivals, [time]))
-            fig, axes = plt.subplots(figsize=(12, 5))
-            steps = np.arange(self.initial_state, self.initial_state + len(arrivals) + 1)
-            steps = np.append(steps, steps[-1])
-            axes.step(x_times, steps, where='post')
-            plt.show()
-        return arrivals
-
     def get_model_parameters(self):
         return self.model_params
+
