@@ -5,9 +5,9 @@ from domain.averagers.time_averager import TimeAverager
 
 class EnsembleTimeAverager:
 
-    def ensemble_time_absolute_velocity_average(self, model, N, T, window_length, time_step):
-        ensemble = self.generate_absolute_velocity_ensemble(model, N, T, window_length, time_step)
-        return np.mean(ensemble, axis=0)
+    def average(self, model, N, T, time_step, average_type='regular'):
+        ensemble = self.generate_ensemble(model, N, T, time_step, average_type)
+        return np.mean(ensemble)
 
     # Time: total time to simulate
     # Time step: timestep between computed observations
@@ -17,12 +17,12 @@ class EnsembleTimeAverager:
         ensemble = self.generate_tamsd_ensemble(model, N, T, delta, time_step)
         return np.mean(ensemble)
 
-    def generate_absolute_velocity_ensemble(self, model, N, T, window_length, time_step):
+    def generate_ensemble(self, model, N, T, time_step, average_type):
         time_averager = TimeAverager()
         ensemble = []
         for i in range(N):
-            absolute_average = time_averager.absolute_velocity_average(model, T, window_length, time_step)
-            ensemble.append(absolute_average)
+            average = time_averager.average(model, T, time_step, average_type)
+            ensemble.append(average)
         return ensemble
 
     def generate_tamsd_ensemble(self, model, N, T, delta, time_step):

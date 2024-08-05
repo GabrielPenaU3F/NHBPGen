@@ -5,29 +5,35 @@ from scipy.stats import linregress
 from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 
-bpm3p = BPM3pProcess(0.25, 1, 1)
+bpm3p = BPM3pProcess(1, 1, 1)
 
 averager = EnsembleTimeAverager()
+window_length = 100
 N = 100
-max_T = 1000
+T = 1000
 time_step = 1
-delta = 10
+delta_max = 100
+delta_axis = np.arange(1, delta_max + 1)
+absavg_delta = []
 
-vel_avgs = []
-t = np.arange(100, max_T, 1)
-for T in t:
-    vel_avg = averager.average(bpm3p, N, T, time_step, average_type='abs-vel')
-    vel_avgs.append(vel_avg)
+for delta in delta_axis:
+    absavg = averager.ensemble_time_absolute_velocity_average(bpm3p, N, T, delta, time_step)
+    if absavg == 0:
+        absavg = np.min(absavg_delta)
+    absavg_delta.append(absavg)
 
-slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(vel_avgs))
+log_deltas = np.log(delta_axis)
+log_vel_avg = np.log(absavg_delta)
+
+slope, intercept, r_value, p_value, std_err = linregress(log_deltas, log_vel_avg)
 
 fig, ax = plt.subplots(figsize=(8, 5))
 
-plt.loglog(t, vel_avgs, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
+plt.loglog(log_deltas, log_vel_avg, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
 
 
-ax.set_title('Absolute velocity ET-average (subdiffusion)', fontsize=14)
-ax.set_xlabel('Time (t)', fontsize=11)
+ax.set_title('Absolute velocity ET-average (Normal diffusion)', fontsize=14)
+ax.set_xlabel('Time lag (Δ)', fontsize=11)
 ax.xaxis.set_tick_params(labelsize=10)
 ax.xaxis.labelpad = 4
 ax.set_ylabel('Absolute velocity', fontsize=11)

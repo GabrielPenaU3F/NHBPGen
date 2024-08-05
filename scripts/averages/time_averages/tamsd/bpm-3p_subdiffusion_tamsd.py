@@ -10,7 +10,7 @@ bpm3p = BPM3pProcess(1/4, 1, 1)
 averager = TimeAverager()
 T = 10000
 step_length = 1
-delta_max = 1000
+delta_max = 100
 delta_axis = np.arange(1, delta_max + 1)
 tamsd_delta = []
 for delta in delta_axis:
