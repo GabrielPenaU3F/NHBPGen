@@ -5,7 +5,7 @@ from scipy.stats import linregress
 from domain.averagers.time_averager import TimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 
-bpm3p = BPM3pProcess(0.25, 1, 1)
+bpm3p = BPM3pProcess(1/4, 1, 1)
 
 averager = TimeAverager()
 T = 10000
@@ -15,19 +15,18 @@ delta_axis = np.arange(1, delta_max + 1)
 tamsd_delta = []
 for delta in delta_axis:
     tamsd = averager.tamsd(bpm3p, T, delta, step_length)
+    if tamsd == 0:
+        tamsd = np.min(tamsd_delta)
     tamsd_delta.append(tamsd)
 
 log_deltas = np.log(delta_axis)
 log_tamsd = np.log(tamsd_delta)
 
 slope, intercept, r_value, p_value, std_err = linregress(log_deltas, log_tamsd)
-alpha = slope
-print(f"Estimated scaling exponent α: {alpha}")
 
 fig, ax = plt.subplots(figsize=(8, 5))
-# ax.plot(delta_axis, tamsd_delta, label='TAMSD')
 
-plt.loglog(delta_axis, tamsd_delta, 'o-', label='TAMSD')
+plt.loglog(delta_axis, tamsd_delta, 'o-', label='TAMSD- Slope = ' + str(slope))
 plt.xlabel('Time lag (Δ)')
 plt.ylabel('TAMSD')
 plt.title('Log-Log Plot of TAMSD')
