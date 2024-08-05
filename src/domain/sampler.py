@@ -1,6 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+from domain.extra_functions import extra_functions
 from domain.processes.bpm_3p_process import BPM3pProcess
 from domain.processes.bpm_process import BPMProcess
 from domain.processes.fendick_process import FendickProcess
@@ -24,3 +25,19 @@ class Sampler:
             axes.step(x_times, steps, where='post')
             plt.show()
         return arrivals
+
+    def generate_observations_sample_path(self, model, time, time_step, plot=True):
+        arrivals = model.generate_arrivals(time)
+        number_of_steps = int(np.floor(time / time_step))
+        observations = []
+        for i in range(0, number_of_steps):
+            time_marker = i * time_step
+            observations.append(extra_functions.count_events_until_time(arrivals, time_marker))
+
+        if plot is True:
+            t = np.arange(0, time, time_step)
+            fig, axes = plt.subplots(figsize=(12, 5))
+            axes.step(t, observations, where='post')
+            plt.show()
+
+        return observations
