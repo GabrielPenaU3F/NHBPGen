@@ -1,6 +1,6 @@
 import numpy as np
 
-from domain.extra_functions.extra_functions import create_normalized_sample_path
+from domain.sampler import Sampler
 
 
 class EnsembleAverager:
@@ -16,6 +16,6 @@ class EnsembleAverager:
     def generate_ensemble(self, model, N, T, time_step):
         ensemble = []
         for i in range(N):
-            sample_path = create_normalized_sample_path(model, T, time_step)
+            sample_path = Sampler().generate_observations_sample_path(model, T, time_step, plot=False)
             ensemble.append(sample_path)
         return ensemble

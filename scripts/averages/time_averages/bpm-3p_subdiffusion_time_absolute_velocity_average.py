@@ -3,8 +3,8 @@ from matplotlib import pyplot as plt
 from scipy.stats import linregress
 
 from domain.averagers.time_averager import TimeAverager
-from domain.extra_functions import extra_functions
 from domain.processes.bpm_3p_process import BPM3pProcess
+from domain.sampler import Sampler
 
 bpm3p = BPM3pProcess(0.25, 1, 1)
 
@@ -16,7 +16,7 @@ delta = 10
 
 vel_avgs = []
 t_axis = np.arange(100, max_T, 1)
-states_sample_path = extra_functions.create_normalized_sample_path(bpm3p, max_T, time_step)
+states_sample_path = Sampler().generate_observations_sample_path(bpm3p, max_T, time_step, plot=False)
 for t in t_axis:
     vel_avg = averager.average(states_sample_path, t, time_step, average_type='abs-vel')
     vel_avgs.append(vel_avg)

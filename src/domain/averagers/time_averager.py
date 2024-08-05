@@ -5,6 +5,7 @@ import numpy as np
 from domain.averagers.displacement_averaging_strategies.displacement_averaging_strategies import \
     RegularAveragingStrategy, AbsoluteAveragingStrategy, AbsoluteVelocityAveragingStrategy
 from domain.extra_functions import extra_functions
+from domain.sampler import Sampler
 
 
 class TimeAverager:
@@ -29,7 +30,7 @@ class TimeAverager:
 
     def generate_displacements_array(self, model, T, delta, time_step):
         delta = int(delta)  # Ensure it is an integer
-        X = extra_functions.create_normalized_sample_path(model, T, time_step)
+        X = Sampler().generate_observations_sample_path(model, T, time_step, plot=False)
         N = int(T * time_step)
         m = int(delta / time_step)
         displacements = []
