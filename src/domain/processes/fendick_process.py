@@ -18,6 +18,11 @@ class FendickProcess(GPP):
         gamma = gamma_per_rho * rho
         return 1/(1 + gamma * t)
 
+    def Kappa_t(self, t):
+        gamma_per_rho, beta_per_rho, rho = self.model_params
+        gamma = gamma_per_rho * rho
+        return (1/gamma) * np.log(1 + gamma * t)
+
     def validate_model_parameters(self, model_params):
         gamma_per_rho, beta_per_rho, rho = model_params
         if not gamma_per_rho > 0:

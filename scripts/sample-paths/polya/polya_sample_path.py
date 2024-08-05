@@ -1,5 +1,8 @@
 from domain.processes.polya_process import PolyaProcess
+from domain.sampler import Sampler
 
 polya = PolyaProcess(1.2, 10)
 
-arrivals = polya.generate_sample_path(1000)
+sampler = Sampler()
+arrivals = sampler.generate_arrivals_sample_path(polya, 1000)
+

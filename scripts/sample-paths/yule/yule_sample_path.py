@@ -1,5 +1,7 @@
 from domain.processes.yule_process import YuleProcess
+from domain.sampler import Sampler
 
-yule = YuleProcess(0.5, 1)
+yule = YuleProcess(0.1, 1)
 
-arrivals = yule.generate_sample_path(10)
+sampler = Sampler()
+arrivals = sampler.generate_arrivals_sample_path(yule, 10)
