@@ -5,7 +5,7 @@ from scipy.stats import linregress
 from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 
-bpm3p = BPM3pProcess(0.25, 1, 1)
+bpm3p = BPM3pProcess(1, 1, 1)
 
 averager = EnsembleTimeAverager()
 N = 100
@@ -22,7 +22,7 @@ fig, ax = plt.subplots(figsize=(8, 5))
 plt.loglog(t, vel_avgs, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
 
 
-ax.set_title('Absolute velocity ET-average (subdiffusion)', fontsize=14)
+ax.set_title('Absolute velocity ET-average (ballistic diffusion)', fontsize=14)
 ax.set_xlabel('Time (t)', fontsize=11)
 ax.xaxis.set_tick_params(labelsize=10)
 ax.xaxis.labelpad = 4

@@ -4,7 +4,6 @@ import numpy as np
 
 from domain.averagers.displacement_averaging_strategies.displacement_averaging_strategies import \
     RegularAveragingStrategy, AbsoluteAveragingStrategy, AbsoluteVelocityAveragingStrategy
-from domain.extra_functions import extra_functions
 from domain.sampler import Sampler
 
 
@@ -16,12 +15,12 @@ class TimeAverager:
         'abs-vel': AbsoluteVelocityAveragingStrategy,
     }
 
-    def average(self, states_sample_path, T, time_step=1, average_type='regular'):
+    def average(self, observations_sample_path, T, time_step=1, average_type='regular'):
         strategy_class = self.strategies.get(average_type)
         if not strategy_class:
             raise ValueError(f"Unknown average type: {average_type}")
 
-        return strategy_class().calculate(states_sample_path, T, time_step)
+        return strategy_class().calculate(observations_sample_path, T, time_step)
 
     # delta should be a multiple of time step.
     def tamsd(self, model, T, delta, time_step=1):
