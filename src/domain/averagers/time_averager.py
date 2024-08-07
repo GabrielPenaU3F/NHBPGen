@@ -22,10 +22,16 @@ class TimeAverager:
 
         return strategy_class().calculate(observations_sample_path, T, time_step)
 
-    # delta should be a multiple of time step.
-    def tamsd(self, model, T, delta, time_step=1):
-        displacements = self.generate_displacements_array(model, T, delta, time_step)
-        return np.mean(displacements)
+    def tamsd(self, model, T, min_delta, max_delta, time_step=1):
+        delta_axis = np.arange(min_delta, max_delta + 1)
+        tamsd_delta = []
+        for delta in delta_axis:
+            displacements = self.generate_displacements_array(model, T, delta, time_step)
+            tamsd = np.mean(displacements)
+            if tamsd == 0:
+                tamsd = np.min(tamsd_delta)
+            tamsd_delta.append(tamsd)
+        return tamsd_delta
 
     def generate_displacements_array(self, model, T, delta, time_step):
         delta = int(delta)  # Ensure it is an integer

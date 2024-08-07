@@ -22,9 +22,9 @@ class EnsembleTimeAverager:
     # Time step: timestep between computed observations
     # N: Number of repetitions to average
     # Delta: Length of displacement to compute
-    def etamsd(self, model, N, T, delta, time_step):
-        ensemble = self.generate_tamsd_ensemble(model, N, T, delta, time_step)
-        return np.mean(ensemble)
+    def etamsd(self, model, N, T, delta_min, max_delta, time_step):
+        ensemble = self.generate_tamsd_ensemble(model, N, T, delta_min, max_delta, time_step)
+        return np.mean(ensemble, axis=0)
 
     def generate_ensemble(self, model, N, T, time_step, average_type):
         time_averager = TimeAverager()
@@ -35,12 +35,13 @@ class EnsembleTimeAverager:
             ensemble.append(average)
         return ensemble
 
-    def generate_tamsd_ensemble(self, model, N, T, delta, time_step):
+    def generate_tamsd_ensemble(self, model, N, T, min_delta, max_delta, time_step):
         time_averager = TimeAverager()
         ensemble = []
         for i in range(N):
-            tamsd = time_averager.tamsd(model, T, delta, time_step)
+            tamsd = time_averager.tamsd(model, T, min_delta, max_delta, time_step)
             ensemble.append(tamsd)
+            print(f"Generating trajectory n={i + 1} ...")
         return ensemble
 
     def generate_ensemble_as_function_of_t(self, model, N, min_T, max_T, time_step, average_type):

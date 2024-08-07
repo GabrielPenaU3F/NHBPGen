@@ -12,25 +12,15 @@ window_length = 100
 N = 100
 T = 1000
 time_step = 1
-delta_max = 100
-delta_axis = np.arange(1, delta_max + 1)
-absavg_delta = []
+min_T = 100
+max_T = 1000
 
-for delta in delta_axis:
-    absavg = averager.ensemble_time_absolute_velocity_average(bpm3p, N, T, delta, time_step)
-    if absavg == 0:
-        absavg = np.min(absavg_delta)
-    absavg_delta.append(absavg)
-
-log_deltas = np.log(delta_axis)
-log_vel_avg = np.log(absavg_delta)
-
-slope, intercept, r_value, p_value, std_err = linregress(log_deltas, log_vel_avg)
+t = np.arange(min_T, max_T, time_step)
+vel_avgs = averager.average_as_function_of_t(bpm3p, N, min_T, max_T, time_step, average_type='abs-vel')
+slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(vel_avgs))
 
 fig, ax = plt.subplots(figsize=(8, 5))
-
-plt.loglog(log_deltas, log_vel_avg, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
-
+plt.loglog(t, vel_avgs, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
 
 ax.set_title('Absolute velocity ET-average (Normal diffusion)', fontsize=14)
 ax.set_xlabel('Time lag (Δ)', fontsize=11)
