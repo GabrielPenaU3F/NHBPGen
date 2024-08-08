@@ -3,16 +3,15 @@ import warnings
 import numpy as np
 
 from domain.averagers.averaging_strategies.time_averaging_strategies import \
-    RegularTimeAveragingStrategy, AbsoluteTimeAveragingStrategy, AbsoluteVelocityTimeAveragingStrategy
+    AbsoluteVelocityTimeAveragingStrategy, SquareVelocityTimeAveragingStrategy
 from domain.sampler import Sampler
 
 
 class TimeAverager:
 
     strategies = {
-        'regular': RegularTimeAveragingStrategy,
-        'abs': AbsoluteTimeAveragingStrategy,
         'abs-vel': AbsoluteVelocityTimeAveragingStrategy,
+        'sq-vel': SquareVelocityTimeAveragingStrategy
     }
 
     def average(self, observations_sample_path, T, delta, average_type='regular'):
