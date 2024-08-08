@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from domain.calculators.ensemble_averager import EnsembleAverager
+from domain.averagers.ensemble_averager import EnsembleAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 
 bpm3p = BPM3pProcess(1.5, 1, 1)
@@ -9,10 +9,10 @@ bpm3p = BPM3pProcess(1.5, 1, 1)
 averager = EnsembleAverager()
 N = 1000
 T = 100
-step_length = 1
-average = averager.average(bpm3p, N, T, step_length)
+time_step = 1
+average = averager.average(bpm3p, N, T, time_step)
 
-t = np.linspace(0, T, int(T/step_length))
+t = np.linspace(0, T, int(T / time_step))
 mv = bpm3p.mean_value(t)
 
 fig, ax = plt.subplots(figsize=(8, 5))

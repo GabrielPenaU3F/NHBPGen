@@ -4,25 +4,25 @@ from typing import List
 import numpy as np
 
 
-class DisplacementAveragingStrategy(ABC):
+class TimeAveragingStrategy(ABC):
     @abstractmethod
     def calculate(self, X: List[float], T: float, delta: int) -> float:
         pass
 
 
-class RegularAveragingStrategy(DisplacementAveragingStrategy):
+class RegularTimeAveragingStrategy(TimeAveragingStrategy):
 
     def calculate(self, X, T, delta):
         pass
 
 
-class AbsoluteAveragingStrategy(DisplacementAveragingStrategy):
+class AbsoluteTimeAveragingStrategy(TimeAveragingStrategy):
 
     def calculate(self, X, T, delta):
         pass
 
 
-class AbsoluteVelocityAveragingStrategy(DisplacementAveragingStrategy):
+class AbsoluteVelocityTimeAveragingStrategy(TimeAveragingStrategy):
 
     def calculate(self, X, T, delta):
         n = int(T/delta)

@@ -9,10 +9,10 @@ bpm3p = BPM3pProcess(1, 1, 1)
 averager = EnsembleAverager()
 N = 1000
 T = 1000
-step_length = 1
-average = averager.average(bpm3p, N, T, step_length)
+time_step = 1
+average = averager.average(bpm3p, N, T, time_step)
 
-t = np.linspace(0, T, int(T/step_length))
+t = np.linspace(0, T, int(T / time_step))
 mv = bpm3p.mean_value(t)
 
 fig, ax = plt.subplots(figsize=(8, 5))

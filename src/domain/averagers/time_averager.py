@@ -2,17 +2,17 @@ import warnings
 
 import numpy as np
 
-from domain.averagers.displacement_averaging_strategies.displacement_averaging_strategies import \
-    RegularAveragingStrategy, AbsoluteAveragingStrategy, AbsoluteVelocityAveragingStrategy
+from domain.averagers.averaging_strategies.time_averaging_strategies import \
+    RegularTimeAveragingStrategy, AbsoluteTimeAveragingStrategy, AbsoluteVelocityTimeAveragingStrategy
 from domain.sampler import Sampler
 
 
 class TimeAverager:
 
     strategies = {
-        'regular': RegularAveragingStrategy,
-        'abs': AbsoluteAveragingStrategy,
-        'abs-vel': AbsoluteVelocityAveragingStrategy,
+        'regular': RegularTimeAveragingStrategy,
+        'abs': AbsoluteTimeAveragingStrategy,
+        'abs-vel': AbsoluteVelocityTimeAveragingStrategy,
     }
 
     def average(self, observations_sample_path, T, delta, average_type='regular'):
