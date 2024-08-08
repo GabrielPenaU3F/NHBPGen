@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import linregress
 
 from domain.averagers.time_averager import TimeAverager
 from domain.sampler import Sampler
@@ -57,3 +58,11 @@ class EnsembleTimeAverager:
             ensemble.append(avgs)
             print(f"Generating trajectory n={i+1} ...")
         return np.array(ensemble)
+
+    def estimate_moses(self, model, N, min_T, max_T, time_step=1):
+        t = np.arange(min_T, max_T, time_step)
+        vel_avgs = self.average_as_function_of_t(model, N, min_T, max_T, time_step, average_type='abs-vel')
+        slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(vel_avgs))
+        M = slope + 1/2
+        print(f'Moses exponent: M={M}')
+        return M

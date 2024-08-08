@@ -12,7 +12,6 @@ N = 100
 min_T = 100
 max_T = 1000
 time_step = 1
-delta = 10
 
 t = np.arange(min_T, max_T, time_step)
 vel_avgs = averager.average_as_function_of_t(bpm3p, N, min_T, max_T, time_step, average_type='abs-vel')

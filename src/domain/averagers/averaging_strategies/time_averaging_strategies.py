@@ -31,4 +31,4 @@ class AbsoluteVelocityTimeAveragingStrategy(TimeAveragingStrategy):
             sum += np.abs(X[j * delta] - X[(j-1) * delta])/delta
 
         # return n * sum
-        return sum/T
+        return sum/(T - delta)
