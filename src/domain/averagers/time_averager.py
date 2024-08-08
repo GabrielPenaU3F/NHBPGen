@@ -15,12 +15,12 @@ class TimeAverager:
         'abs-vel': AbsoluteVelocityAveragingStrategy,
     }
 
-    def average(self, observations_sample_path, T, time_step=1, average_type='regular'):
+    def average(self, observations_sample_path, T, delta, average_type='regular'):
         strategy_class = self.strategies.get(average_type)
         if not strategy_class:
             raise ValueError(f"Unknown average type: {average_type}")
 
-        return strategy_class().calculate(observations_sample_path, T, time_step)
+        return strategy_class().calculate(observations_sample_path, T, delta)
 
     def tamsd(self, model, T, min_delta, max_delta, time_step=1):
         delta_axis = np.arange(min_delta, max_delta + 1)

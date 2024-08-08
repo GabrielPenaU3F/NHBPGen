@@ -25,8 +25,10 @@ class AbsoluteAveragingStrategy(DisplacementAveragingStrategy):
 class AbsoluteVelocityAveragingStrategy(DisplacementAveragingStrategy):
 
     def calculate(self, X, T, delta):
+        n = int(T/delta)
         sum = 0
-        for j in range(1, int(T/delta)):
-            sum += X[j * delta] - X[(j-1) * delta]
+        for j in range(1, n):
+            sum += np.abs(X[j * delta] - X[(j-1) * delta])/delta
 
-        return sum/(T - delta)
+        # return n * sum
+        return sum/T
