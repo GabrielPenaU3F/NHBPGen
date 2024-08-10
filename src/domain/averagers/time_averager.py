@@ -25,14 +25,13 @@ class TimeAverager:
         delta_axis = np.arange(min_delta, max_delta + 1)
         tamsd_delta = []
         for delta in delta_axis:
-            displacements = self.generate_displacements_array(model, T, delta, time_step)
-            tamsd = np.mean(displacements)
+            tamsd = self.calculate_tamsd(model, T, delta, time_step)
             if tamsd == 0:
                 tamsd = np.min(tamsd_delta)
             tamsd_delta.append(tamsd)
         return tamsd_delta
 
-    def generate_displacements_array(self, model, T, delta, time_step):
+    def calculate_tamsd(self, model, T, delta, time_step):
         delta = int(delta)  # Ensure it is an integer
         X = Sampler().generate_observations_sample_path(model, T, time_step, plot=False)
         N = int(T * time_step)
@@ -45,4 +44,4 @@ class TimeAverager:
         for k in range(0, N - m):
             displacement = (X[k + delta] - X[k]) ** 2
             displacements.append(displacement)
-        return displacements
+        return np.sum(displacements) / (N - m + 1)
