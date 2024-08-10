@@ -7,7 +7,6 @@ from domain.sampler import Sampler
 
 class EnsembleTimeAverager:
 
-    # See e.g. Eq. B1 from Aghion et al. (2021) or Eq. 4 from Vilk et al. (2022)
     def average(self, model, N, T, time_step, average_type='regular'):
         ensemble = self.generate_ensemble(model, N, T, time_step, average_type)
         return np.mean(ensemble)
@@ -19,12 +18,13 @@ class EnsembleTimeAverager:
         ensemble = self.generate_ensemble_as_function_of_t(model, N, min_T, max_T, time_step, average_type)
         return np.mean(ensemble, axis=0)
 
+    # See e.g. Eq. B1 from Aghion et al. (2021) or Eq. 4 from Vilk et al. (2022)
     # Time: total time to simulate
     # Time step: timestep between computed observations
     # N: Number of repetitions to average
     # Delta: Length of displacement to compute
-    def etamsd(self, model, N, T, delta_min, max_delta, time_step):
-        ensemble = self.generate_tamsd_ensemble(model, N, T, delta_min, max_delta, time_step)
+    def etamsd(self, model, N, T, min_delta, max_delta, time_step):
+        ensemble = self.generate_tamsd_ensemble(model, N, T, min_delta, max_delta, time_step)
         return np.mean(ensemble, axis=0)
 
     def generate_ensemble(self, model, N, T, time_step, average_type):
@@ -74,3 +74,11 @@ class EnsembleTimeAverager:
         L = (slope - 2*moses + 2)/2
         print(f'Noah exponent: L={L}')
         return L
+
+    def estimate_joseph(self, model, N, T, min_delta, max_delta, time_step=1):
+        etamsd = self.etamsd(model, N, T, min_delta, max_delta, time_step)
+        delta_axis = np.arange(min_delta, max_delta + 1, 1)
+        slope, intercept, r_value, p_value, std_err = linregress(np.log(delta_axis), np.log(etamsd))
+        J = slope/2
+        print(f'Joseph exponent: J={J}')
+        return J
