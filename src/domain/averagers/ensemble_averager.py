@@ -29,6 +29,7 @@ class EnsembleAverager:
         for i in range(N):
             sample_path = Sampler().generate_observations_sample_path(model, T, time_step, plot=False)
             ensemble.append(sample_path)
+            print(f"Generating trajectory n={i + 1} ...")
         return ensemble
 
     def estimate_hurst(self, model, N, T, time_step=1):
