@@ -4,9 +4,10 @@ from scipy.stats import linregress
 
 from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
+from domain.sampler.sampler import Sampler
 
 bpm3p = BPM3pProcess(0.5, 1, 1)
-
+sampler = Sampler()
 averager = EnsembleTimeAverager()
 window_length = 100
 N = 100
@@ -16,7 +17,8 @@ min_T = 100
 max_T = 1000
 
 t = np.arange(min_T, max_T, time_step)
-vel_avgs = averager.average_as_function_of_t(bpm3p, N, min_T, max_T, time_step, average_type='abs-vel')
+ensemble = sampler.generate_ensemble(bpm3p, N, max_T, path_type='observations', time_step=time_step)
+vel_avgs = averager.average_as_function_of_t(ensemble, min_T, max_T, time_step, average_type='abs-vel')
 slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(vel_avgs))
 
 fig, ax = plt.subplots(figsize=(8, 5))

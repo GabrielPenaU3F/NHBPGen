@@ -7,16 +7,12 @@ from domain.sampler.sampler import Sampler
 
 class EnsembleTimeAverager:
 
-    def average(self, model, N, T, time_step, average_type='regular'):
-        ensemble = self.generate_ensemble(model, N, T, time_step, average_type)
-        return np.mean(ensemble)
-
     # See e.g. Eqs. 4 and 5 from Aghion et al. (2021)
     # min_T: minimum time location over which to compute the average of displacements
     # max_T: maximum of those
-    def average_as_function_of_t(self, model, N, min_T, max_T, time_step, average_type='regular'):
-        ensemble = self.generate_ensemble_as_function_of_t(model, N, min_T, max_T, time_step, average_type)
-        return np.mean(ensemble, axis=0)
+    def average_as_function_of_t(self, ensemble, min_T, max_T, time_step, average_type='regular'):
+        ta_ensemble_t = self.time_average_ensemble_as_function_of_t(ensemble, min_T, max_T, time_step, average_type)
+        return np.mean(ta_ensemble_t, axis=0)
 
     # See e.g. Eq. B1 from Aghion et al. (2021) or Eq. 4 from Vilk et al. (2022)
     # Time: total time to simulate
@@ -27,16 +23,6 @@ class EnsembleTimeAverager:
         ensemble = self.generate_tamsd_ensemble(model, N, T, min_delta, max_delta, time_step)
         return np.mean(ensemble, axis=0)
 
-    def generate_ensemble(self, model, N, T, time_step, average_type):
-        time_averager = TimeAverager()
-        ensemble = []
-        for i in range(N):
-            observations = Sampler().simulate_sample_path(model, T, path_type='observations',
-                                                          time_step=time_step, plot=False)
-            average = time_averager.average(observations, T, time_step, average_type)
-            ensemble.append(average)
-        return ensemble
-
     def generate_tamsd_ensemble(self, model, N, T, min_delta, max_delta, time_step):
         time_averager = TimeAverager()
         ensemble = []
@@ -46,20 +32,19 @@ class EnsembleTimeAverager:
             print(f"Generating trajectory n={i + 1} ...")
         return ensemble
 
-    def generate_ensemble_as_function_of_t(self, model, N, min_T, max_T, time_step, average_type):
+    def time_average_ensemble_as_function_of_t(self, ensemble, min_T, max_T, time_step, average_type):
         time_averager = TimeAverager()
-        ensemble = []
         t_axis = np.arange(min_T, max_T, time_step)
-        for i in range(N):
+        avg_ensemble_t = []
+        for i in range(len(ensemble)):
+            path = ensemble[i]
             avgs = []
-            observations_sample_path = Sampler().simulate_sample_path(model, max_T, path_type='observations',
-                                                                      time_step=time_step, plot=False)
             for T in t_axis:
-                avg = time_averager.average(observations_sample_path, T, time_step, average_type)
+                avg = time_averager.average(path, T, time_step, average_type)
                 avgs.append(avg)
-            ensemble.append(avgs)
-            print(f"Generating trajectory n={i+1} ...")
-        return np.array(ensemble)
+            avg_ensemble_t.append(avgs)
+            print(f"Time-averaging trajectory n={i+1} ...")
+        return np.array(avg_ensemble_t)
 
     def estimate_moses(self, model, N, min_T, max_T, time_step=1):
         t = np.arange(min_T, max_T, time_step)
