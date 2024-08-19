@@ -21,27 +21,26 @@ class TimeAverager:
 
         return strategy_class().calculate(observations_sample_path, T, delta)
 
-    def tamsd(self, model, T, min_delta, max_delta, time_step=1):
+    def tamsd(self, sample_path, min_delta, max_delta, time_step=1):
         delta_axis = np.arange(min_delta, max_delta + 1)
         tamsd_delta = []
         for delta in delta_axis:
-            tamsd = self.calculate_tamsd(model, T, delta, time_step)
+            n_delta = int(delta / time_step)
+            tamsd = self.calculate_tamsd(sample_path, n_delta)
             if tamsd == 0:
                 tamsd = np.min(tamsd_delta)
             tamsd_delta.append(tamsd)
         return tamsd_delta
 
-    def calculate_tamsd(self, model, T, delta, time_step):
-        delta = int(delta)  # Ensure it is an integer
-        X = Sampler().simulate_sample_path(model, T, path_type='observations', time_step=time_step, plot=False)
-        N = int(T * time_step)
-        m = int(delta / time_step)
+    def calculate_tamsd(self, X, n_delta):
+        N = len(X)
+        m = n_delta
         displacements = []
         if m >= N:
             m -= 1
             warnings.warn("Delta is too large for the given T and step_length. Truncating the last observation.")
 
         for k in range(0, N - m):
-            displacement = (X[k + delta] - X[k]) ** 2
+            displacement = (X[k + m] - X[k]) ** 2
             displacements.append(displacement)
         return np.sum(displacements) / (N - m + 1)
