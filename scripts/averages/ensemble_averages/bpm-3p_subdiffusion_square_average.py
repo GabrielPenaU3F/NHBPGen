@@ -4,14 +4,17 @@ from scipy.stats import linregress
 
 from domain.averagers.ensemble_averager import EnsembleAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
+from domain.sampler.sampler import Sampler
 
 bpm3p = BPM3pProcess(0.25, 1, 1)
-
+sampler = Sampler()
 averager = EnsembleAverager()
 N = 1000
 T = 1000
 time_step = 1
-average = averager.average(bpm3p, N, T, time_step, average_type='sq')
+
+ensemble = sampler.generate_ensemble(bpm3p, N, T, path_type='observations', time_step=time_step)
+average = averager.average(ensemble, average_type='sq')
 
 t = np.linspace(0, T, int(T / time_step))
 

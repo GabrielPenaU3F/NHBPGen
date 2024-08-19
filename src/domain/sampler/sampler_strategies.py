@@ -56,5 +56,10 @@ class ObservationsSamplePathStrategy(SamplePathStrategy):
 
         return observations
 
-    def generate_ensemble(self, *args, **kwargs) -> List[List[float]]:
-        pass
+    def generate_ensemble(self, model: NHBP, N: int, time: float, time_step: float, plot=True) -> List[List[float]]:
+        ensemble = []
+        for i in range(N):
+            sample_path = self.generate_path(model, time, time_step, plot=False)
+            ensemble.append(sample_path)
+            print(f"Generating trajectory n={i + 1} ...")
+        return ensemble

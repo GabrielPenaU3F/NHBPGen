@@ -16,25 +16,15 @@ class EnsembleAverager:
     # N is the total of simulations to run
     # T is the total time units to simulate
     # Time step is the timestep between sucessive observations, in time units. Default is 1
-    def average(self, model, N, T, time_step=1, average_type='regular'):
-        ensemble = self.generate_ensemble(model, N, T, time_step)
+    def average(self, ensemble, average_type='regular'):
         strategy_class = self.strategies.get(average_type)
         if not strategy_class:
             raise ValueError(f"Unknown average type: {average_type}")
 
         return strategy_class().calculate(ensemble)
 
-    def generate_ensemble(self, model, N, T, time_step):
-        ensemble = []
-        for i in range(N):
-            sample_path = Sampler().simulate_sample_path(model, T, path_type='observations',
-                                                         time_step=time_step, plot=False)
-            ensemble.append(sample_path)
-            print(f"Generating trajectory n={i + 1} ...")
-        return ensemble
-
-    def estimate_hurst(self, model, N, T, time_step=1):
-        average = self.average(model, N, T, time_step, average_type='sq')
+    def estimate_hurst(self, ensemble, T, time_step):
+        average = self.average(ensemble, average_type='sq')
         t = np.linspace(0, T, int(T / time_step))
         log_t = np.log(t[1:])
         log_avg = np.log(average[1:])

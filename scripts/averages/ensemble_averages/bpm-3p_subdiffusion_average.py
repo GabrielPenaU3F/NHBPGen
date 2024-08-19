@@ -12,8 +12,8 @@ averager = EnsembleAverager()
 N = 1000
 T = 1000
 time_step = 1
-ensemble = sampler.generate_ensemble(bpm3p, N, T, type='observations', time_step=time_step)
-average = averager.average(bpm3p, N, T, time_step)
+ensemble = sampler.generate_ensemble(bpm3p, N, T, path_type='observations', time_step=time_step)
+average = averager.average(ensemble)
 
 t = np.linspace(0, T, int(T / time_step))
 mv = bpm3p.mean_value(t)

@@ -19,5 +19,7 @@ class Sampler:
         full_args = model, time, *args
         return strategy.generate_path(*full_args, **kwargs)
 
-    def generate_ensemble(self, model, N, T, type, time_step):
-        pass
+    def generate_ensemble(self, model: NHBP, N: int, time: float, path_type: str, *args, **kwargs):
+        strategy = self.strategies.get(path_type)()
+        full_args = model, N, time, *args
+        return strategy.generate_ensemble(*full_args, **kwargs)
