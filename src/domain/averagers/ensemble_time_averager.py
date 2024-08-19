@@ -2,7 +2,7 @@ import numpy as np
 from scipy.stats import linregress
 
 from domain.averagers.time_averager import TimeAverager
-from domain.sampler import Sampler
+from domain.sampler.sampler import Sampler
 
 
 class EnsembleTimeAverager:
@@ -31,7 +31,8 @@ class EnsembleTimeAverager:
         time_averager = TimeAverager()
         ensemble = []
         for i in range(N):
-            observations = Sampler().generate_observations_sample_path(model, T, time_step, plot=False)
+            observations = Sampler().simulate_sample_path(model, T, path_type='observations',
+                                                          time_step=time_step, plot=False)
             average = time_averager.average(observations, T, time_step, average_type)
             ensemble.append(average)
         return ensemble
@@ -51,7 +52,8 @@ class EnsembleTimeAverager:
         t_axis = np.arange(min_T, max_T, time_step)
         for i in range(N):
             avgs = []
-            observations_sample_path = Sampler().generate_observations_sample_path(model, max_T, time_step, plot=False)
+            observations_sample_path = Sampler().simulate_sample_path(model, max_T, path_type='observations',
+                                                                      time_step=time_step, plot=False)
             for T in t_axis:
                 avg = time_averager.average(observations_sample_path, T, time_step, average_type)
                 avgs.append(avg)

@@ -3,7 +3,7 @@ from scipy.stats import linregress
 
 from domain.averagers.averaging_strategies.ensemble_averaging_strategies import RegularEnsembleAveragingStrategy, \
     SquareEnsembleAveragingStrategy
-from domain.sampler import Sampler
+from domain.sampler.sampler import Sampler
 
 
 class EnsembleAverager:
@@ -27,7 +27,8 @@ class EnsembleAverager:
     def generate_ensemble(self, model, N, T, time_step):
         ensemble = []
         for i in range(N):
-            sample_path = Sampler().generate_observations_sample_path(model, T, time_step, plot=False)
+            sample_path = Sampler().simulate_sample_path(model, T, path_type='observations',
+                                                         time_step=time_step, plot=False)
             ensemble.append(sample_path)
             print(f"Generating trajectory n={i + 1} ...")
         return ensemble

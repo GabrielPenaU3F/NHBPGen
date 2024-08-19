@@ -1,6 +1,6 @@
 from domain.processes.poisson_process import PoissonProcess
 from domain.processes.polya_process import PolyaProcess
-from domain.queues.birth_death_queue import BirthDeathQueue
+from domain.queues.birth_death.birth_death_queue import BirthDeathQueue
 
 n_queues = 1000
 beta, gamma = 2, 0.8

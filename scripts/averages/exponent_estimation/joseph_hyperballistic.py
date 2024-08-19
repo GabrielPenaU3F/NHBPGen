@@ -7,7 +7,7 @@ averager = EnsembleTimeAverager()
 N = 100
 min_delta = 5
 max_delta = 50
-T = 500
+T = 1000
 time_step = 1
 
 averager.estimate_joseph(bpm3p, N, T, min_delta, max_delta, time_step)

@@ -4,7 +4,7 @@ import numpy as np
 
 from domain.averagers.averaging_strategies.time_averaging_strategies import \
     AbsoluteVelocityTimeAveragingStrategy, SquareVelocityTimeAveragingStrategy
-from domain.sampler import Sampler
+from domain.sampler.sampler import Sampler
 
 
 class TimeAverager:
@@ -33,7 +33,7 @@ class TimeAverager:
 
     def calculate_tamsd(self, model, T, delta, time_step):
         delta = int(delta)  # Ensure it is an integer
-        X = Sampler().generate_observations_sample_path(model, T, time_step, plot=False)
+        X = Sampler().simulate_sample_path(model, T, path_type='observations', time_step=time_step, plot=False)
         N = int(T * time_step)
         m = int(delta / time_step)
         displacements = []

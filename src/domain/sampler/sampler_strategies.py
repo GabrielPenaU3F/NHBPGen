@@ -1,24 +1,32 @@
+from abc import ABC, abstractmethod
+from typing import List, Any
+
 import numpy as np
 from matplotlib import pyplot as plt
 
 from domain.extra_functions import extra_functions
-from domain.processes.bpm_3p_process import BPM3pProcess
-from domain.processes.bpm_process import BPMProcess
-from domain.processes.fendick_process import FendickProcess
-from domain.processes.poisson_process import PoissonProcess
-from domain.processes.polya_process import PolyaProcess
-from domain.processes.yule_process import YuleProcess
+from domain.processes.nhbp import NHBP
 from exceptions import SimulationException
 
 
-class Sampler:
+class SamplePathStrategy(ABC):
+    @abstractmethod
+    def generate_path(self, *args: Any, **kwargs: Any) -> List[float]:
+        pass
 
-    def generate_arrivals_sample_path(self, model, time, plot=True):
+    @abstractmethod
+    def generate_ensemble(self, *args, **kwargs) -> List[List[float]]:
+        pass
+
+
+class ArrivalsSamplePathStrategy(SamplePathStrategy):
+
+    def generate_path(self, model: NHBP, time: float, plot=True) -> List[float]:
         if not time > 0:
             raise SimulationException('Duration of the simulation must be a positive number')
         arrivals = model.generate_arrivals(time)
         if plot is True:
-            x_times = np.concatenate(([0], arrivals, [time]))
+            x_times = np.concatenate((np.array([0]), arrivals, [time]))
             fig, axes = plt.subplots(figsize=(12, 5))
             steps = np.arange(model.get_initial_state(), model.get_initial_state() + len(arrivals) + 1)
             steps = np.append(steps, steps[-1])
@@ -26,7 +34,13 @@ class Sampler:
             plt.show()
         return arrivals
 
-    def generate_observations_sample_path(self, model, time, time_step, plot=True):
+    def generate_ensemble(self, *args, **kwargs) -> List[List[float]]:
+        pass
+
+
+class ObservationsSamplePathStrategy(SamplePathStrategy):
+
+    def generate_path(self, model: NHBP, time: float, time_step: float, plot=True) -> List[float]:
         arrivals = model.generate_arrivals(time)
         number_of_steps = int(np.floor(time / time_step))
         observations = []
@@ -41,3 +55,6 @@ class Sampler:
             plt.show()
 
         return observations
+
+    def generate_ensemble(self, *args, **kwargs) -> List[List[float]]:
+        pass

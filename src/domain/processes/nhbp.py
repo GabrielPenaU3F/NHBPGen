@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from matplotlib import pyplot as plt
 
-from exceptions import ModelParametersException, SimulationException
+from exceptions import ModelParametersException
 
 
 class NHBP(ABC):
