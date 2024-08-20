@@ -41,3 +41,11 @@ class TimeAverager:
             displacement = (X[k + m] - X[k]) ** 2
             displacements.append(displacement)
         return np.sum(displacements) / (N - m + 1)
+
+    def time_average_as_function_of_t(self, sample_path, min_T, max_T, time_step, average_type):
+        avg_t = []
+        t_axis = np.arange(min_T, max_T, time_step)
+        for T in t_axis:
+            avg = self.average(sample_path, T, time_step, average_type)
+            avg_t.append(avg)
+        return avg_t

@@ -34,15 +34,11 @@ class EnsembleTimeAverager:
 
     def time_average_ensemble_as_function_of_t(self, ensemble, min_T, max_T, time_step, average_type):
         time_averager = TimeAverager()
-        t_axis = np.arange(min_T, max_T, time_step)
         avg_ensemble_t = []
         for i in range(len(ensemble)):
             path = ensemble[i]
-            avgs = []
-            for T in t_axis:
-                avg = time_averager.average(path, T, time_step, average_type)
-                avgs.append(avg)
-            avg_ensemble_t.append(avgs)
+            avg_t = time_averager.time_average_as_function_of_t(path, min_T, max_T, time_step, average_type)
+            avg_ensemble_t.append(avg_t)
             print(f"Time-averaging trajectory n={i+1} ...")
         return np.array(avg_ensemble_t)
 
