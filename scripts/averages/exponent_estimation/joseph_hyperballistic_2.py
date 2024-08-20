@@ -2,12 +2,12 @@ from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 from domain.sampler.sampler import Sampler
 
-bpm3p = BPM3pProcess(1/4, 1, 1)
+bpm3p = BPM3pProcess(3/2, 1, 1)
 sampler = Sampler()
 averager = EnsembleTimeAverager()
 N = 100
-min_delta = 10
-max_delta = 100
+min_delta = 5
+max_delta = 50
 T = 1000
 time_step = 1
 

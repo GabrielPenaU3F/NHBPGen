@@ -18,18 +18,19 @@ class EnsembleTimeAverager:
     # Time step: timestep between computed observations
     # N: Number of repetitions to average
     # Delta: Length of displacement to compute
-    def etamsd(self, model, N, T, min_delta, max_delta, time_step):
-        ensemble = self.generate_tamsd_ensemble(model, N, T, min_delta, max_delta, time_step)
-        return np.mean(ensemble, axis=0)
+    def etamsd(self, ensemble, min_delta, max_delta, time_step):
+        tamsd_ensemble = self.build_tamsd_ensemble(ensemble, min_delta, max_delta, time_step)
+        return np.mean(tamsd_ensemble, axis=0)
 
-    def generate_tamsd_ensemble(self, model, N, T, min_delta, max_delta, time_step):
+    def build_tamsd_ensemble(self, ensemble, min_delta, max_delta, time_step):
         time_averager = TimeAverager()
-        ensemble = []
-        for i in range(N):
-            tamsd = time_averager.tamsd(model, T, min_delta, max_delta, time_step)
-            ensemble.append(tamsd)
-            print(f"Generating trajectory n={i + 1} ...")
-        return ensemble
+        tamsd_ensemble = []
+        for i in range(len(ensemble)):
+            sample_path = ensemble[i]
+            tamsd = time_averager.tamsd(sample_path, min_delta, max_delta, time_step)
+            tamsd_ensemble.append(tamsd)
+            print(f"Time-averaging trajectory n={i + 1} ...")
+        return tamsd_ensemble
 
     def time_average_ensemble_as_function_of_t(self, ensemble, min_T, max_T, time_step, average_type):
         time_averager = TimeAverager()
@@ -61,8 +62,8 @@ class EnsembleTimeAverager:
         print(f'Noah exponent: L={L}')
         return L
 
-    def estimate_joseph(self, model, N, T, min_delta, max_delta, time_step=1):
-        etamsd = self.etamsd(model, N, T, min_delta, max_delta, time_step)
+    def estimate_joseph(self, ensemble, min_delta, max_delta, time_step=1):
+        etamsd = self.etamsd(ensemble, min_delta, max_delta, time_step)
         delta_axis = np.arange(min_delta, max_delta + 1, 1)
         slope, intercept, r_value, p_value, std_err = linregress(np.log(delta_axis), np.log(etamsd))
         J = slope/2

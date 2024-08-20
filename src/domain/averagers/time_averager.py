@@ -26,8 +26,6 @@ class TimeAverager:
         for delta in delta_axis:
             n_delta = int(delta / time_step)
             tamsd = self.calculate_tamsd(sample_path, n_delta)
-            if tamsd == 0:
-                tamsd = np.min(tamsd_delta)
             tamsd_delta.append(tamsd)
         return tamsd_delta
 

@@ -4,9 +4,10 @@ from scipy.stats import linregress
 
 from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
+from domain.sampler.sampler import Sampler
 
 bpm3p = BPM3pProcess(0.25, 1, 1)
-
+sampler = Sampler()
 averager = EnsembleTimeAverager()
 T = 1000
 N = 100
@@ -15,7 +16,8 @@ delta_min = 1
 delta_max = 100
 delta_axis = np.arange(delta_min, delta_max + 1)
 
-etamsd_delta = averager.etamsd(bpm3p, N, T, delta_min, delta_max, time_step)
+ensemble = sampler.generate_ensemble(bpm3p, N, T, path_type='observations', time_step=time_step)
+etamsd_delta = averager.etamsd(ensemble, delta_min, delta_max, time_step)
 
 log_deltas = np.log(delta_axis)
 log_etamsd = np.log(etamsd_delta)
