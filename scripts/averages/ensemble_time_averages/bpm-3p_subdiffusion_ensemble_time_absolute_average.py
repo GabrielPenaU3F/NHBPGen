@@ -6,26 +6,25 @@ from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 from domain.sampler.sampler import Sampler
 
-bpm3p = BPM3pProcess(0.5, 1, 1)
+bpm3p = BPM3pProcess(0.25, 1, 1)
 sampler = Sampler()
 averager = EnsembleTimeAverager()
-window_length = 100
 N = 100
-T = 1000
-time_step = 1
 min_T = 100
 max_T = 1000
+time_step = 1
 
-t = np.arange(min_T, max_T, time_step)
 ensemble = sampler.generate_ensemble(bpm3p, N, max_T, path_type='observations', time_step=time_step)
-vel_avgs = averager.average_as_function_of_t(ensemble, min_T, max_T, time_step, average_type='abs-vel')
-slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(vel_avgs))
+avgs_t = averager.average_as_function_of_t(ensemble, min_T, max_T, time_step, average_type='abs')
+t = np.arange(min_T, max_T, time_step)
+slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(avgs_t))
 
 fig, ax = plt.subplots(figsize=(8, 5))
-plt.loglog(t, vel_avgs, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
+plt.loglog(t, avgs_t, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
 
-ax.set_title('Absolute velocity ET-average (Normal diffusion)', fontsize=14)
-ax.set_xlabel('Time lag (Δ)', fontsize=11)
+
+ax.set_title('Absolute velocity ET-average (subdiffusion)', fontsize=14)
+ax.set_xlabel('Time (t)', fontsize=11)
 ax.xaxis.set_tick_params(labelsize=10)
 ax.xaxis.labelpad = 4
 ax.set_ylabel('Absolute velocity', fontsize=11)

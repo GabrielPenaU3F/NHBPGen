@@ -18,7 +18,7 @@ vel_avgs = []
 t_axis = np.arange(100, max_T, 1)
 states_sample_path = Sampler().simulate_sample_path(bpm3p, max_T, path_type='observations', time_step=time_step, plot=False)
 for t in t_axis:
-    vel_avg = averager.average(states_sample_path, t, time_step, average_type='abs-vel')
+    vel_avg = averager.average(states_sample_path, t, time_step, average_type='abs')
     vel_avgs.append(vel_avg)
 
 slope, intercept, r_value, p_value, std_err = linregress(np.log(t_axis), np.log(vel_avgs))

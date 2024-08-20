@@ -10,23 +10,23 @@ class TimeAveragingStrategy(ABC):
         pass
 
 
-class AbsoluteVelocityTimeAveragingStrategy(TimeAveragingStrategy):
+class AbsoluteTimeAveragingStrategy(TimeAveragingStrategy):
 
     def calculate(self, X, T, delta):
         n = int(T/delta)
         sum = 0
         for j in range(1, n):
-            sum += np.abs(X[j * delta] - X[(j-1) * delta])/delta
+            sum += np.abs(X[j * delta] - X[(j-1) * delta])
 
         return sum/n
 
 
-class SquareVelocityTimeAveragingStrategy(TimeAveragingStrategy):
+class SquareTimeAveragingStrategy(TimeAveragingStrategy):
 
     def calculate(self, X, T, delta):
         n = int(T/delta)
         sum = 0
         for j in range(1, n):
-            sum += ((X[j * delta] - X[(j-1) * delta])/delta) ** 2
+            sum += (X[j * delta] - X[(j-1) * delta]) ** 2
 
         return sum/n

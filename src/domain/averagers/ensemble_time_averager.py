@@ -2,7 +2,6 @@ import numpy as np
 from scipy.stats import linregress
 
 from domain.averagers.time_averager import TimeAverager
-from domain.sampler.sampler import Sampler
 
 
 class EnsembleTimeAverager:
@@ -46,17 +45,17 @@ class EnsembleTimeAverager:
             print(f"Time-averaging trajectory n={i+1} ...")
         return np.array(avg_ensemble_t)
 
-    def estimate_moses(self, model, N, min_T, max_T, time_step=1):
+    def estimate_moses(self, ensemble, min_T, max_T, time_step=1):
         t = np.arange(min_T, max_T, time_step)
-        vel_avgs = self.average_as_function_of_t(model, N, min_T, max_T, time_step, average_type='abs-vel')
-        slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(vel_avgs))
+        avgs_t = self.average_as_function_of_t(ensemble, min_T, max_T, time_step, average_type='abs')
+        slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(avgs_t))
         M = slope + 1/2
         print(f'Moses exponent: M={M}')
         return M
 
     def estimate_noah(self, model, moses, N, min_T, max_T, time_step=1):
         t = np.arange(min_T, max_T, time_step)
-        sq_vel_avgs = self.average_as_function_of_t(model, N, min_T, max_T, time_step, average_type='sq-vel')
+        sq_vel_avgs = self.average_as_function_of_t(model, N, min_T, max_T, time_step, average_type='sq')
         slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(sq_vel_avgs))
         L = (slope - 2*moses + 2)/2
         print(f'Noah exponent: L={L}')
