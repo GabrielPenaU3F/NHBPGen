@@ -53,10 +53,10 @@ class EnsembleTimeAverager:
         print(f'Moses exponent: M={M}')
         return M
 
-    def estimate_noah(self, model, moses, N, min_T, max_T, time_step=1):
+    def estimate_noah(self, ensemble, moses, min_T, max_T, time_step=1):
         t = np.arange(min_T, max_T, time_step)
-        sq_vel_avgs = self.average_as_function_of_t(model, N, min_T, max_T, time_step, average_type='sq')
-        slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(sq_vel_avgs))
+        sq_avgs_t = self.average_as_function_of_t(ensemble, min_T, max_T, time_step, average_type='sq')
+        slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(sq_avgs_t))
         L = (slope - 2*moses + 2)/2
         print(f'Noah exponent: L={L}')
         return L

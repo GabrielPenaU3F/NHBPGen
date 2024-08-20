@@ -4,7 +4,6 @@ import numpy as np
 
 from domain.averagers.averaging_strategies.time_averaging_strategies import \
     AbsoluteTimeAveragingStrategy, SquareTimeAveragingStrategy
-from domain.sampler.sampler import Sampler
 
 
 class TimeAverager:
