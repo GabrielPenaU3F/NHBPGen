@@ -6,9 +6,10 @@ bpm3p = BPM3pProcess(1/2, 1, 1)
 sampler = Sampler()
 averager = EnsembleTimeAverager()
 N = 100
-min_T = 100
+min_T = 10
 max_T = 1000
+delta = 1
 time_step = 1
 
 ensemble = sampler.generate_ensemble(bpm3p, N, max_T, path_type='observations', time_step=time_step)
-averager.estimate_moses(ensemble, min_T, max_T, time_step)
+averager.estimate_moses(ensemble, min_T, max_T, delta, time_step)
