@@ -39,9 +39,8 @@ class GPP(NHBP):
         pass
 
     def generate_next_arrival_time(self, current_state, present_time):
-        random = np.random.rand()
-        return self.interarrival_inverse_cdf(random, current_state, present_time)
+        return self.interarrival_inverse_cdf(current_state, present_time)
 
     @abstractmethod
-    def interarrival_inverse_cdf(self, random_number, current_state, present_time):
+    def interarrival_inverse_cdf(self, current_state, present_time):
         pass

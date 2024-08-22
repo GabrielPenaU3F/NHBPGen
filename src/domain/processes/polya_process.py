@@ -25,9 +25,10 @@ class PolyaProcess(GPP):
             raise ModelParametersException('Polya beta parameter must be a positive number')
         return gamma, beta
 
-    def interarrival_inverse_cdf(self, x, k, s):
+    def interarrival_inverse_cdf(self, k, s):
         gamma, beta = self.model_params
+        random = np.random.rand()
         exponent = -gamma/(beta + gamma*k)
-        second_factor = np.power(1 - x, exponent)
+        second_factor = np.power(1 - random, exponent)
         return ((1 + gamma*s) * second_factor - 1)/gamma
 

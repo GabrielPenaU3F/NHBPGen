@@ -2,7 +2,7 @@ import numpy as np
 
 from domain.processes.gpp import GPP
 from exceptions import ModelParametersException
-
+import numba
 
 class BPM3pProcess(GPP):
 
@@ -31,8 +31,14 @@ class BPM3pProcess(GPP):
             raise ModelParametersException('BPM-3p rho parameter must be a positive number')
         return gamma, beta, rho
 
-    def interarrival_inverse_cdf(self, x, k, s):
+    def interarrival_inverse_cdf(self, k, s):
         gamma, beta, rho = self.model_params
+        return BPM3pProcess.numba_inverse_cdf(gamma, beta, rho, k, s)
+
+    @staticmethod
+    @numba.njit
+    def numba_inverse_cdf(gamma, beta, rho, k, s):
+        random = np.random.rand()
         exponent = -rho / (beta + gamma * k)
-        second_factor = np.power(1 - x, exponent)
+        second_factor = np.power(1 - random, exponent)
         return ((1 + rho * s) * second_factor - 1) / beta
