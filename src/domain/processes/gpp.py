@@ -7,15 +7,11 @@ from domain.processes.nhbp import NHBP
 
 class GPP(NHBP):
 
-    def __init__(self, slope, intercept, extra_params=tuple(), initial_state=0):
-        full_set_of_params = tuple((slope, intercept)) + extra_params
+    def __init__(self, slope, intercept, *args, **kwargs):
         self.slope = slope
         self.intercept = intercept
-        super().__init__(full_set_of_params, initial_state)
-
-    @abstractmethod
-    def set_number_of_parameters(self):
-        pass
+        mandatory_params = self.determine_mandatory_parameters(slope, intercept, *args)
+        super().__init__(mandatory_params)
 
     def intensity_function(self, k, t):
         gamma, beta = self.slope, self.intercept
@@ -35,6 +31,10 @@ class GPP(NHBP):
     def Kappa_t(self, t):
         pass
 
+    def determine_mandatory_parameters(self, slope, intercept, *args, **kwargs):
+        return slope, intercept
+
+    @abstractmethod
     def validate_model_parameters(self, model_params):
         pass
 

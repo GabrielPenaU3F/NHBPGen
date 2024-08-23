@@ -6,12 +6,8 @@ import numba
 
 class BPM3pProcess(GPP):
 
-    def __init__(self, gamma, beta, rho, extra_params=tuple(), initial_state=0):
-        extra_params = (rho,) + extra_params
-        super().__init__(gamma, beta, extra_params, initial_state)
-
-    def set_number_of_parameters(self):
-        self.n_of_params = 3
+    def __init__(self, gamma, beta, rho, initial_state=0):
+        super().__init__(gamma, beta, rho, initial_state=initial_state)
 
     def kappa_t(self, t):
         gamma, beta, rho = self.model_params
@@ -20,6 +16,10 @@ class BPM3pProcess(GPP):
     def Kappa_t(self, t):
         gamma, beta, rho = self.model_params
         return (1/rho) * np.log(1 + rho * t)
+
+    def determine_mandatory_parameters(self, slope, intercept, *args, **kwargs):
+        rho = args[0]
+        return slope, intercept, rho
 
     def validate_model_parameters(self, model_params):
         gamma, beta, rho = model_params

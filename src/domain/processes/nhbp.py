@@ -9,19 +9,13 @@ from exceptions import ModelParametersException
 
 class NHBP(ABC):
 
-    n_of_params = None
     model_params = None
     initial_state = None
 
-    def __init__(self, model_params, initial_state=0):
-        self.initial_state = self.validate_initial_state(initial_state)
-        self.set_number_of_parameters()
-        self.check_number_of_parameters(model_params)
-        self.model_params = self.validate_model_parameters(model_params)
+    def __init__(self, *args, **kwargs):
+        self.initial_state = self.validate_initial_state(kwargs.get('initial_state'))
+        self.model_params = self.validate_model_parameters(*args)
 
-    @abstractmethod
-    def set_number_of_parameters(self):
-        pass
 
     @abstractmethod
     def intensity_function(self, k, t):
@@ -30,15 +24,10 @@ class NHBP(ABC):
     def get_initial_state(self):
         return self.initial_state
 
-    def check_number_of_parameters(self, model_params):
-        if isinstance(model_params, numbers.Number):
-            if 1 != self.n_of_params:
-                raise ModelParametersException('Incorrect number of parameters for this model')
-        elif len(model_params) != self.n_of_params:
-            raise ModelParametersException('Incorrect number of parameters for this model')
-
     def validate_initial_state(self, initial_state):
-        if not initial_state >= 0 or not isinstance(initial_state, int):
+        if not initial_state:
+            return 0
+        if not isinstance(initial_state, int) or initial_state < 0:
             raise ModelParametersException('Initial state must be a positive integer')
         return initial_state
 

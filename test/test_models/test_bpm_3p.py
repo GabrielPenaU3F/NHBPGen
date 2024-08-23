@@ -6,12 +6,6 @@ from exceptions import ModelParametersException
 
 class BPM3pTest(unittest.TestCase):
 
-    def test_bpm_3p_process_receives_three_parameters(self):
-        try:
-            BPM3pProcess(1, 2, 1)
-        except ModelParametersException:
-            self.fail()
-
     def test_bpm_3p_process_gamma_parameter_cannot_be_negative_nor_zero(self):
         beta = 2
         rho = 1
