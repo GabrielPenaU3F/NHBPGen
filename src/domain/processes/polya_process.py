@@ -1,13 +1,13 @@
 import numpy as np
 
-from domain.processes.gpp import GPP
+from domain.processes.bpm_3p_process import BPM3pProcess
 from exceptions import ModelParametersException
 
 
-class PolyaProcess(GPP):
+class PolyaProcess(BPM3pProcess):
 
-    def set_number_of_parameters(self):
-        self.n_of_params = 2
+    def __init__(self, gamma, beta, initial_state=0):
+        super().__init__(gamma, beta, gamma, initial_state=initial_state)
 
     def kappa_t(self, t):
         gamma, beta = self.model_params
@@ -17,6 +17,10 @@ class PolyaProcess(GPP):
         gamma, beta = self.model_params
         return (1/gamma) * np.log(1 + gamma * t)
 
+    def determine_mandatory_parameters(self, *args, **kwargs):
+        gamma, beta, gamma = args
+        return gamma, beta
+
     def validate_model_parameters(self, model_params):
         gamma, beta = model_params
         if not gamma > 0:
@@ -24,11 +28,3 @@ class PolyaProcess(GPP):
         if not beta > 0:
             raise ModelParametersException('Polya beta parameter must be a positive number')
         return gamma, beta
-
-    def interarrival_inverse_cdf(self, k, s):
-        gamma, beta = self.model_params
-        random = np.random.rand()
-        exponent = -gamma/(beta + gamma*k)
-        second_factor = np.power(1 - random, exponent)
-        return ((1 + gamma*s) * second_factor - 1)/gamma
-

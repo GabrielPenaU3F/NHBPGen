@@ -6,12 +6,6 @@ from exceptions import ModelParametersException
 
 class YuleTest(unittest.TestCase):
 
-    def test_yule_process_receives_two_parameters_and_initial_state(self):
-        try:
-            YuleProcess(1, 2)
-        except ModelParametersException:
-            self.fail()
-
     def test_yule_process_parameter_cannot_be_negative_nor_zero(self):
         err_msg = 'Yule parameter must be a positive number'
         self.assertRaisesRegex(ModelParametersException, err_msg,

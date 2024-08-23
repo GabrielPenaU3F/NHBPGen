@@ -17,9 +17,9 @@ class BPM3pProcess(GPP):
         gamma, beta, rho = self.model_params
         return (1/rho) * np.log(1 + rho * t)
 
-    def determine_mandatory_parameters(self, slope, intercept, *args, **kwargs):
-        rho = args[0]
-        return slope, intercept, rho
+    def determine_mandatory_parameters(self, *args, **kwargs):
+        gamma, beta, rho = args
+        return gamma, beta, rho
 
     def validate_model_parameters(self, model_params):
         gamma, beta, rho = model_params

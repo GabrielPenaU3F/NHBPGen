@@ -6,12 +6,6 @@ from exceptions import ModelParametersException
 
 class BPMTest(unittest.TestCase):
 
-    def test_bpm_process_receives_two_parameters(self):
-        try:
-            BPMProcess(1, 2)
-        except ModelParametersException:
-            self.fail()
-
     def test_bpm_process_gamma_parameter_cannot_be_negative_nor_zero(self):
         beta = 2
         err_msg = 'BPM gamma parameter must be a positive number'

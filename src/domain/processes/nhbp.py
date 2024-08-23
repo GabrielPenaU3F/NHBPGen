@@ -14,7 +14,8 @@ class NHBP(ABC):
 
     def __init__(self, *args, **kwargs):
         self.initial_state = self.validate_initial_state(kwargs.get('initial_state'))
-        self.model_params = self.validate_model_parameters(*args)
+        mandatory_params = self.determine_mandatory_parameters(*args)
+        self.model_params = self.validate_model_parameters(mandatory_params)
 
 
     @abstractmethod
@@ -30,6 +31,10 @@ class NHBP(ABC):
         if not isinstance(initial_state, int) or initial_state < 0:
             raise ModelParametersException('Initial state must be a positive integer')
         return initial_state
+
+    @abstractmethod
+    def determine_mandatory_parameters(self, *args, **kwargs):
+        pass
 
     @abstractmethod
     def validate_model_parameters(self, model_params):

@@ -1,17 +1,16 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 import numpy as np
 
 from domain.processes.nhbp import NHBP
 
 
-class GPP(NHBP):
+class GPP(NHBP, ABC):
 
     def __init__(self, slope, intercept, *args, **kwargs):
         self.slope = slope
         self.intercept = intercept
-        mandatory_params = self.determine_mandatory_parameters(slope, intercept, *args)
-        super().__init__(mandatory_params)
+        super().__init__(slope, intercept, *args, **kwargs)
 
     def intensity_function(self, k, t):
         gamma, beta = self.slope, self.intercept
@@ -29,13 +28,6 @@ class GPP(NHBP):
 
     @abstractmethod
     def Kappa_t(self, t):
-        pass
-
-    def determine_mandatory_parameters(self, slope, intercept, *args, **kwargs):
-        return slope, intercept
-
-    @abstractmethod
-    def validate_model_parameters(self, model_params):
         pass
 
     def generate_next_arrival_time(self, current_state, present_time):

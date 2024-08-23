@@ -6,12 +6,8 @@ from exceptions import ModelParametersException
 
 class FendickProcess(GPP):
 
-    def __init__(self, gamma, beta, rho):
-        rho_tpl = (rho,)
-        super().__init__(gamma/rho, beta/rho, extra_params=rho_tpl)
-
-    def set_number_of_parameters(self):
-        self.n_of_params = 3
+    def __init__(self, gamma, beta, rho, initial_state=0):
+        super().__init__(gamma/rho, beta/rho,rho, initial_state=initial_state)
 
     def kappa_t(self, t):
         gamma_per_rho, beta_per_rho, rho = self.model_params
@@ -23,6 +19,9 @@ class FendickProcess(GPP):
         gamma = gamma_per_rho * rho
         return (1/gamma) * np.log(1 + gamma * t)
 
+    def determine_mandatory_parameters(self, *args, **kwargs):
+        return args
+
     def validate_model_parameters(self, model_params):
         gamma_per_rho, beta_per_rho, rho = model_params
         if not gamma_per_rho > 0:
@@ -33,9 +32,10 @@ class FendickProcess(GPP):
             raise ModelParametersException('Fendick rho parameter must be a positive number')
         return gamma_per_rho, beta_per_rho, rho
 
-    def interarrival_inverse_cdf(self, x, k, s):
+    def interarrival_inverse_cdf(self, k, s):
+        random = np.random.rand()
         gamma_per_rho, beta_per_rho, rho = self.model_params
         exponent = -gamma_per_rho/(beta_per_rho + gamma_per_rho*k)
-        second_factor = np.power(1 - x, exponent)
+        second_factor = np.power(1 - random, exponent)
         gamma = gamma_per_rho * rho
         return ((1 + gamma*s) * second_factor - 1)/gamma

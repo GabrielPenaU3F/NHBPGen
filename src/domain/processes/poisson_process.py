@@ -6,17 +6,20 @@ from exceptions import ModelParametersException
 
 class PoissonProcess(NHBP):
 
+    def __init__(self, lambda_, initial_state=0):
+        super().__init__(lambda_, initial_state=initial_state)
+
     def generate_next_arrival_time(self, current_state, present_time):
         lambda_ = self.model_params
         scale = 1/lambda_
         return present_time + np.random.exponential(scale)
 
-    # Fix the number of parameters the particular model has
-    def set_number_of_parameters(self):
-        self.n_of_params = 1
-
     def intensity_function(self, r, t):
         return self.model_params
+
+    def determine_mandatory_parameters(self, *args, **kwargs):
+        lambda_ = args[0]
+        return lambda_
 
     def validate_model_parameters(self, model_params):
         lambda_ = model_params

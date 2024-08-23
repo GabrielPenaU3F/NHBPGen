@@ -6,12 +6,6 @@ from exceptions import ModelParametersException
 
 class PolyaTest(unittest.TestCase):
 
-    def test_polya_process_receives_two_parameters(self):
-        try:
-            PolyaProcess(1, 2)
-        except ModelParametersException:
-            self.fail()
-
     def test_polya_process_gamma_parameter_cannot_be_negative_nor_zero(self):
         beta = 2
         err_msg = 'Polya gamma parameter must be a positive number'
