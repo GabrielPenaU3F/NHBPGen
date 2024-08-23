@@ -27,7 +27,7 @@ class EnsembleAverager:
         average = self.average(ensemble, average_type='sq')
         t = np.linspace(0, T, int(T / time_step))
         log_t = np.log(t[1:])
-        log_avg = np.log(average[1:])
+        log_avg = np.log(average[1:int(T / time_step)])
         slope, intercept, r_value, p_value, std_err = linregress(log_t, log_avg)
         H = slope/2
         print(f'Hurst parameter: H={H}')
