@@ -9,7 +9,8 @@ N = 100
 min_T = 100
 max_T = 1000
 time_step = 1
-moses = 0.170
+delta=1
+moses = -0.170
 
 ensemble = sampler.generate_ensemble(bpm3p, N, max_T, path_type='observations', time_step=time_step)
-averager.estimate_noah(ensemble, moses, min_T, max_T, time_step)
+averager.estimate_noah(ensemble, moses, min_T, max_T, delta, time_step)
