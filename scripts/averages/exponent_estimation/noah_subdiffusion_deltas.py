@@ -3,8 +3,6 @@ from matplotlib import pyplot as plt
 from scipy.stats import linregress
 
 from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
-from domain.processes.bpm_3p_process import BPM3pProcess
-from domain.sampler.sampler import Sampler
 
 averager = EnsembleTimeAverager()
 N = 100
