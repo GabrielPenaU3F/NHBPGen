@@ -10,15 +10,15 @@ bpm3p = BPM3pProcess(1, 1, 1)
 sampler = Sampler()
 averager = EnsembleTimeAverager()
 N = 100
-min_T = 100
-max_T = 1000
+T = 1000
+delta = 10
 time_step = 1
 
-t = np.arange(min_T, max_T, time_step)
-ensemble = sampler.generate_ensemble(bpm3p, N, max_T, path_type='observations', time_step=time_step)
-avgs_t = averager.average_as_function_of_t(ensemble, min_T, max_T, time_step, average_type='sq')
+t = np.arange(delta, T + time_step, time_step)
+ensemble = sampler.generate_ensemble(bpm3p, N, T, path_type='observations', time_step=time_step)
+avgs_t = averager.average_as_function_of_t(ensemble, T, delta, time_step, average_type='sq')
 slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(avgs_t))
-M = 0.503
+M = 1/2
 L = (slope - 2 * M + 2) / 2
 
 fig, ax = plt.subplots(figsize=(8, 5))

@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABC
 from typing import List
 
+import numba
 import numpy as np
 
 
@@ -12,6 +13,7 @@ class EnsembleAveragingStrategy(ABC):
 
 class RegularEnsembleAveragingStrategy(EnsembleAveragingStrategy):
 
+    @numba.njit
     def calculate(self, ensemble):
         average = np.mean(np.array(ensemble), axis=0)
         return average.tolist()

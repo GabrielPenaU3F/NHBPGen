@@ -10,20 +10,19 @@ bpm3p = BPM3pProcess(0.25, 1, 1)
 
 averager = TimeAverager()
 N = 100
-min_T = 1000
-max_T = 10000
+T = 10000
 time_step = 1
 delta = 10
 
-t_axis = np.arange(min_T, max_T, 1)
-sample_path = Sampler().simulate_sample_path(bpm3p, max_T, path_type='observations', time_step=time_step, plot=False)
-avg_t = averager.time_average_as_function_of_t(sample_path, min_T, max_T, delta, time_step, average_type='abs')
+t = np.arange(delta, T + time_step, time_step)
+sample_path = Sampler().simulate_sample_path(bpm3p, T, path_type='observations', time_step=time_step, plot=False)
+avg_t = averager.time_average_as_function_of_t(sample_path, T, delta, time_step, average_type='abs')
 
-slope, intercept, r_value, p_value, std_err = linregress(np.log(t_axis), np.log(avg_t))
+slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(avg_t))
 
 fig, ax = plt.subplots(figsize=(8, 5))
 
-plt.loglog(t_axis, avg_t, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
+plt.loglog(t, avg_t, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
 
 
 ax.set_title('Absolute velocity time average (subdiffusion)', fontsize=14)
