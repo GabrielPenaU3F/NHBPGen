@@ -7,7 +7,7 @@ import numpy as np
 
 class EnsembleAveragingStrategy(ABC):
     @abstractmethod
-    def calculate(self, ensemble: List[List[float]]) -> List[float]:
+    def calculate(self, ensemble: np.typing.NDArray) -> List[float]:
         pass
 
 
@@ -22,11 +22,6 @@ class RegularEnsembleAveragingStrategy(EnsembleAveragingStrategy):
 class SquareEnsembleAveragingStrategy(EnsembleAveragingStrategy):
 
     def calculate(self, ensemble):
-        transposed_trajectories = list(zip(*ensemble))
-
-        # Calculate the average squared value for each position
-        avg_squared = [sum(x ** 2 for x in position_ensemble) / len(position_ensemble)
-                       for position_ensemble in transposed_trajectories]
-
+        avg_squared = np.mean(ensemble ** 2, axis=0)
         return avg_squared
 

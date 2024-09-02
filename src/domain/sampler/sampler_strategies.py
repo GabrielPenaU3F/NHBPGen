@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Any
 
+import numba
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -11,17 +12,17 @@ from exceptions import SimulationException
 
 class SamplePathStrategy(ABC):
     @abstractmethod
-    def generate_path(self, *args: Any, **kwargs: Any) -> List[float]:
+    def generate_path(self, *args: Any, **kwargs: Any) -> np.typing.NDArray:
         pass
 
     @abstractmethod
-    def generate_ensemble(self, *args, **kwargs) -> List[List[float]]:
+    def generate_ensemble(self, *args, **kwargs) -> np.typing.NDArray:
         pass
 
 
 class ArrivalsSamplePathStrategy(SamplePathStrategy):
 
-    def generate_path(self, model: NHBP, time: float, plot=True) -> List[float]:
+    def generate_path(self, model: NHBP, time: float, plot=True) -> np.typing.NDArray:
         if not time > 0:
             raise SimulationException('Duration of the simulation must be a positive number')
         arrivals = model.generate_arrivals(time)
@@ -34,19 +35,16 @@ class ArrivalsSamplePathStrategy(SamplePathStrategy):
             plt.show()
         return arrivals
 
-    def generate_ensemble(self, *args, **kwargs) -> List[List[float]]:
+    def generate_ensemble(self, *args, **kwargs) -> np.typing.NDArray:
         pass
 
 
 class ObservationsSamplePathStrategy(SamplePathStrategy):
 
-    def generate_path(self, model: NHBP, time: float, time_step: float, plot=True) -> List[float]:
+    def generate_path(self, model: NHBP, time: float, time_step: float, plot=True, dtype='int64') -> np.typing.NDArray:
         arrivals = model.generate_arrivals(time)
-        number_of_steps = int(np.floor(time / time_step))
-        observations = []
-        for i in range(0, number_of_steps):
-            time_marker = i * time_step
-            observations.append(extra_functions.count_events_until_time(arrivals, time_marker))
+        time_markers = np.arange(0, time, time_step, dtype=dtype)
+        observations = extra_functions.parse_observations(arrivals, time_markers, dtype=dtype)
 
         if plot is True:
             t = np.arange(0, time, time_step)
@@ -56,10 +54,12 @@ class ObservationsSamplePathStrategy(SamplePathStrategy):
 
         return observations
 
-    def generate_ensemble(self, model: NHBP, N: int, time: float, time_step: float, plot=True) -> List[List[float]]:
+    def generate_ensemble(self, model: NHBP, N: int, time: float, time_step: float, plot=True, dtype='int64') -> np.typing.NDArray:
         ensemble = []
+        time_markers = np.arange(0, time, time_step, dtype=dtype)
         for i in range(N):
-            sample_path = self.generate_path(model, time, time_step, plot=False)
+            arrivals = model.generate_arrivals(time)
+            sample_path = extra_functions.parse_observations(arrivals, time_markers)
             ensemble.append(sample_path)
             print(f"Generating trajectory n={i + 1} ...")
-        return ensemble
+        return np.array(ensemble)

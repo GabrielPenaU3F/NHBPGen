@@ -6,22 +6,21 @@ from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
 from domain.processes.bpm_3p_process import BPM3pProcess
 from domain.sampler.sampler import Sampler
 
-bpm3p = BPM3pProcess(1, 1, 1)
-sampler = Sampler()
 averager = EnsembleTimeAverager()
-N = 100
-T = 1000
-delta = 10
+N = 1000
+T = 8000
+delta = 200
 time_step = 1
 
 t = np.arange(delta, T + time_step, time_step)
-ensemble = sampler.generate_ensemble(bpm3p, N, T, path_type='observations', time_step=time_step)
+ensemble = np.load('../../../test/test_data/test_ensemble_ballisticdif.npz').get('ensemble')
 avgs_t = averager.average_as_function_of_t(ensemble, T, delta, time_step, average_type='abs')
+avgs_t = avgs_t/np.max(avgs_t)
 slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(avgs_t))
 M = slope + 1/2
 
 fig, ax = plt.subplots(figsize=(8, 5))
-plt.loglog(t, avgs_t, 'o-', label='Absolute velocity average', color='#3A1078')
+plt.loglog(t[200:], avgs_t[200:], '-', linewidth=1.5, label='Absolute velocity average', color='#3A1078')
 
 
 ax.set_title('Absolute velocity ET-average (ballistic diffusion)', fontsize=14)
@@ -42,7 +41,7 @@ legend = ax.legend(fontsize=12, loc='upper left')
 # Annotation
 legend_bbox = legend.get_window_extent()
 legend_bbox = legend_bbox.transformed(fig.transFigure.inverted())
-x_pos = legend_bbox.x0 + 0.045
+x_pos = legend_bbox.x0 + 0.15
 y_pos = legend_bbox.y0  # Adjust this value to position the text as needed
 plt.annotate(f'Slope: {'%.3f'%(slope)}', xy=(x_pos, y_pos), xycoords='figure fraction', fontsize=11)
 plt.annotate(f'M = {'%.3f'%(M)}', xy=(x_pos, y_pos - 0.05), xycoords='figure fraction', fontsize=11)

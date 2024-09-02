@@ -59,7 +59,7 @@ class NHBP(ABC):
             axes.set_yticks([])
             plt.show()
 
-        return np.array(arrivals)
+        return np.array(arrivals, dtype='float32')
 
     @abstractmethod
     def generate_next_arrival_time(self, current_state, present_time):

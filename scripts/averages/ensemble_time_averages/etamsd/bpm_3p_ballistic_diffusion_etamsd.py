@@ -3,20 +3,16 @@ from matplotlib import pyplot as plt
 from scipy.stats import linregress
 
 from domain.averagers.ensemble_time_averager import EnsembleTimeAverager
-from domain.processes.bpm_3p_process import BPM3pProcess
-from domain.sampler.sampler import Sampler
 
-bpm3p = BPM3pProcess(1, 1, 1)
-sampler = Sampler()
 averager = EnsembleTimeAverager()
-T = 1000
-N = 100
+T = 8000
+N = 1000
 time_step = 1
 delta_min = 10
-delta_max = 100
+delta_max = 1000
 delta_axis = np.arange(delta_min, delta_max + 1)
 
-ensemble = sampler.generate_ensemble(bpm3p, N, T, path_type='observations', time_step=time_step)
+ensemble = np.load('../../../../test/test_data/test_ensemble_ballisticdif.npz').get('ensemble')
 etamsd_delta = averager.etamsd(ensemble, delta_min, delta_max, time_step)
 
 slope, intercept, r_value, p_value, std_err = linregress(np.log(delta_axis), np.log(etamsd_delta))
@@ -24,7 +20,7 @@ J = slope / 2
 
 fig, ax = plt.subplots(figsize=(8, 5))
 
-ax.loglog(delta_axis, etamsd_delta, 'o-', label='ETAMSD', color='#3A1078')
+ax.loglog(delta_axis, etamsd_delta, '-', linewidth=1.5, label='ETAMSD', color='#3A1078')
 ax.set_xlabel('Time lag (Δ)', fontsize=11)
 ax.xaxis.set_tick_params(labelsize=10)
 ax.xaxis.labelpad = 4
