@@ -18,10 +18,16 @@ time_step = 1
 t = np.arange(delta, T + time_step, time_step)
 ensemble = sampler.generate_ensemble(bpm3p, N, T, path_type='observations', time_step=time_step)
 avgs_t = averager.average_as_function_of_t(ensemble, T, delta, time_step, average_type='abs')
-slope, intercept, r_value, p_value, std_err = linregress(np.log(t), np.log(avgs_t))
+log_t = np.log(t)
+log_avgs_t = np.log(avgs_t)
+slope, intercept, r_value, p_value, std_err = linregress(log_t, log_avgs_t)
+
+print(r_value)
 
 fig, ax = plt.subplots(figsize=(8, 5))
-plt.loglog(t, avgs_t, 'o-', label='Absolute velocity average - Slope = ' + str(slope))
+# ax.loglog(t[200:], avgs_t[200:], '-', label='Absolute velocity average - Slope = ' + str(slope))
+ax.plot(log_t[200:], log_avgs_t[200:], '-', label='Absolute velocity average - Slope = ' + str(slope))
+ax.plot(log_t[200:], slope * log_t[200:] + intercept, label='Regression line', color='red')
 
 ax.set_title('Absolute velocity ET-average (Normal diffusion)', fontsize=14)
 ax.set_xlabel('Time lag (Δ)', fontsize=11)

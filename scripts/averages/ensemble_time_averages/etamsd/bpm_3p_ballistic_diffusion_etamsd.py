@@ -18,9 +18,12 @@ etamsd_delta = averager.etamsd(ensemble, delta_min, delta_max, time_step)
 slope, intercept, r_value, p_value, std_err = linregress(np.log(delta_axis), np.log(etamsd_delta))
 J = slope / 2
 
-fig, ax = plt.subplots(figsize=(8, 5))
+print(r_value)
 
+fig, ax = plt.subplots(figsize=(8, 5))
 ax.loglog(delta_axis, etamsd_delta, '-', linewidth=1.5, label='ETAMSD', color='#3A1078')
+ax.plot(delta_axis, slope * delta_axis + intercept)
+
 ax.set_xlabel('Time lag (Δ)', fontsize=11)
 ax.xaxis.set_tick_params(labelsize=10)
 ax.xaxis.labelpad = 4

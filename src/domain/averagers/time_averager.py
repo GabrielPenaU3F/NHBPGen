@@ -26,7 +26,7 @@ class TimeAverager:
                 n_delta = N - 1
 
             # Use vectorized operations to calculate displacements
-            displacements = (sample_path[n_delta:] - sample_path[:-n_delta]) ** 2
+            displacements = np.square(sample_path[n_delta:] - sample_path[:-n_delta])
             tamsd = np.mean(displacements)
             tamsd_delta.append(tamsd)
 

@@ -15,10 +15,10 @@ time_step = 1
 data = np.load('../../../test/test_data/test_ensemble_subdif.npz')
 ensemble = data.get('ensemble')
 
-# H = ea.estimate_hurst(ensemble, T, time_step)
-# M = eta.estimate_moses(ensemble, T, delta, time_step)
-# L = eta.estimate_noah(ensemble, M, T, delta, time_step)
+H = ea.estimate_hurst(ensemble, T, time_step)
+M = eta.estimate_moses(ensemble, T, delta, time_step)
+L = eta.estimate_noah(ensemble, M, T, delta, time_step)
 J = eta.estimate_joseph(ensemble, min_delta, delta, time_step)
 
-# summation = M+L+J-1
-# print(f'Summation: {summation}')
+summation = M+L+J-1
+print(f'Summation: {summation}')
