@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import List, Any
+from typing import Any
 
-import numba
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -11,6 +10,7 @@ from exceptions import SimulationException
 
 
 class SamplePathStrategy(ABC):
+
     @abstractmethod
     def generate_path(self, *args: Any, **kwargs: Any) -> np.typing.NDArray:
         pass
