@@ -41,4 +41,4 @@ class BPM3pProcess(GPP):
         random = np.random.rand()
         exponent = -rho / (beta + gamma * k)
         second_factor = np.power(1 - random, exponent)
-        return ((1 + rho * s) * second_factor - 1) / beta
+        return ((1 + rho * s) * second_factor - 1) / rho
