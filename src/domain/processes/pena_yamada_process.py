@@ -6,19 +6,15 @@ from domain.processes.gpp import GPP
 from exceptions import ModelParametersException
 
 
-class PenaSigmoidProcess(GPP):
+class PenaYamadaProcess(GPP):
 
-    def __init__(self, gamma, beta, l, M, initial_state=0):
-        super().__init__(gamma, beta, l, M, initial_state=initial_state)
-
-    def rho_t(self, t):
-        gamma, beta, l, M = self.model_params
-        power = ((M - 2) / (M - 1)) ** (t / l)
-        return M - (M - 1) * power
+    def __init__(self, gamma, beta, b, initial_state=0):
+        super().__init__(gamma, beta, b, initial_state=initial_state)
 
     def kappa_t(self, t):
-        rho = self.rho_t(t)
-        return 1/(1 + rho * t)
+        gamma, _, b = self.model_params
+        frac = b * t / (2 * np.exp(b * t) - b * t - 1)
+        return (b / gamma) * frac
 
     def Kappa_t(self, t):
         return self.Kappa_s_t(0, t)
@@ -34,17 +30,15 @@ class PenaSigmoidProcess(GPP):
             return result
 
     def determine_mandatory_parameters(self, *args, **kwargs):
-        gamma, beta, l, M = args
-        return gamma, beta, l, M
+        gamma, beta, b = args
+        return gamma, beta, b
 
     def validate_model_parameters(self, model_params):
-        gamma, beta, l, M = model_params
+        gamma, beta, b = model_params
         super().validate_model_parameters((gamma, beta))
-        if not l > 0:
-            raise ModelParametersException('Pena Sigmoid l parameter must be a positive number')
-        if not M > 0:
-            raise ModelParametersException('Pena Sigmoid M parameter must be a positive number')
-        return gamma, beta, l, M
+        if not b > 0:
+            raise ModelParametersException('Pena-Yamada b parameter must be a positive number')
+        return gamma, beta, b
 
     def generate_next_arrival_time(self, current_state, present_time):
         k, s = current_state, present_time
@@ -56,3 +50,4 @@ class PenaSigmoidProcess(GPP):
 
     def interarrival_inverse_cdf(self, current_state, present_time):
         pass
+

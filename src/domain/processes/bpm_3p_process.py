@@ -13,9 +13,9 @@ class BPM3pProcess(GPP):
         gamma, beta, rho = self.model_params
         return 1/(1 + rho * t)
 
-    def Kappa_t(self, t):
+    def Kappa_s_t(self, s, t):
         gamma, beta, rho = self.model_params
-        return (1/rho) * np.log(1 + rho * t)
+        return (1/rho) * np.log((1 + rho * t)/(1 + rho * s))
 
     def determine_mandatory_parameters(self, *args, **kwargs):
         gamma, beta, rho = args
@@ -23,10 +23,7 @@ class BPM3pProcess(GPP):
 
     def validate_model_parameters(self, model_params):
         gamma, beta, rho = model_params
-        if not gamma > 0:
-            raise ModelParametersException('BPM-3p gamma parameter must be a positive number')
-        if not beta > 0:
-            raise ModelParametersException('BPM-3p beta parameter must be a positive number')
+        super().validate_model_parameters((gamma, beta))
         if not rho > 0:
             raise ModelParametersException('BPM-3p rho parameter must be a positive number')
         return gamma, beta, rho

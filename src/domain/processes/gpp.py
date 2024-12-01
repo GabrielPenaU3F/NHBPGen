@@ -3,6 +3,7 @@ from abc import abstractmethod, ABC
 import numpy as np
 
 from domain.processes.nhbp import NHBP
+from exceptions import ModelParametersException
 
 
 class GPP(NHBP, ABC):
@@ -19,7 +20,7 @@ class GPP(NHBP, ABC):
     def mean_value(self, t):
         gamma, beta = self.slope, self.intercept
         r = beta/gamma
-        p = np.exp(-gamma * self.Kappa_t(t))
+        p = np.exp(-gamma * self.Kappa_s_t(0, t))
         return r * (1 - p) / p
 
     @abstractmethod
@@ -27,8 +28,21 @@ class GPP(NHBP, ABC):
         pass
 
     @abstractmethod
-    def Kappa_t(self, t):
+    def Kappa_s_t(self, s, t):
         pass
+
+    def F_t(self, k, s, t):
+        gamma, beta = self.model_params[:2]
+        integral = self.Kappa_s_t(s, t)
+        return 1 - np.exp(-(beta + gamma * k) * integral)
+
+    def validate_model_parameters(self, model_params):
+        gamma, beta = model_params
+        if not gamma > 0:
+            raise ModelParametersException('GPP gamma parameter must be a positive number')
+        if not beta > 0:
+            raise ModelParametersException('GPP beta parameter must be a positive number')
+
 
     def generate_next_arrival_time(self, current_state, present_time):
         return self.interarrival_inverse_cdf(current_state, present_time)

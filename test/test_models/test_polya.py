@@ -8,7 +8,7 @@ class PolyaTest(unittest.TestCase):
 
     def test_polya_process_gamma_parameter_cannot_be_negative_nor_zero(self):
         beta = 2
-        err_msg = 'Polya gamma parameter must be a positive number'
+        err_msg = 'GPP gamma parameter must be a positive number'
         self.assertRaisesRegex(ModelParametersException, err_msg,
                                lambda: PolyaProcess(-1, beta))
         self.assertRaisesRegex(ModelParametersException, err_msg,
@@ -16,7 +16,7 @@ class PolyaTest(unittest.TestCase):
 
     def test_polya_process_beta_parameter_cannot_be_negative_nor_zero(self):
         gamma = 2
-        err_msg = 'Polya beta parameter must be a positive number'
+        err_msg = 'GPP beta parameter must be a positive number'
         self.assertRaisesRegex(ModelParametersException, err_msg,
                                lambda: PolyaProcess(gamma, -1))
         self.assertRaisesRegex(ModelParametersException, err_msg,
