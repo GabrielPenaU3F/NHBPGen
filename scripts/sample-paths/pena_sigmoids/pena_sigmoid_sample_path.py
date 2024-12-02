@@ -9,10 +9,11 @@ sampler = Sampler()
 
 t = np.linspace(1, 2000, 2000)
 mv = ps.mean_value(t)
-path = sampler.simulate_sample_path(ps, 2000, path_type='observations', time_step=1, plot=False)
+ensemble = sampler.generate_ensemble(ps, 10, 2000, path_type='observations', time_step=1, plot=False)
+path = np.mean(ensemble, axis=0)
 
 fig, ax = plt.subplots()
-ax.plot(t, mv)
-ax.plot(t, path)
+ax.plot(t, mv, label='Mean value')
+ax.plot(t, path, label='Sample path')
 
 plt.show()

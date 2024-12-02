@@ -16,6 +16,11 @@ class PenaSigmoidProcess(GPP):
         power = ((M - 2) / (M - 1)) ** (t / l)
         return M - (M - 1) * power
 
+    def lambda_k_t(self, k, t):
+        gamma, beta = self.model_params[:2]
+        rho = self.rho_t(t)
+        return (beta + gamma * k) / (1 + rho * t)
+
     def kappa_t(self, t):
         rho = self.rho_t(t)
         return 1/(1 + rho * t)
@@ -47,12 +52,32 @@ class PenaSigmoidProcess(GPP):
         return gamma, beta, l, M
 
     def generate_next_arrival_time(self, current_state, present_time):
-        k, s = current_state, present_time
-        t_values = np.linspace(s, s + 10, 100)  # Adjust this eventually
-        F_values = np.array([self.F_t(k, s, t) for t in t_values])
-        F_inverse = interp1d(F_values, t_values, bounds_error=False, fill_value="extrapolate")
+
+        method_flag = 'simpson'  # Change this to try different averaging methods
+
         u = np.random.uniform(0, 1)
-        return F_inverse(u).item()
+        k, s = current_state, present_time
+        lambda_func = lambda t: self.lambda_k_t(k, t)
+        lambda_s = lambda_func(s)
+        dt = 0.1 / (1 + 10 * lambda_s) # This may be adjusted
+        lambda_dt = lambda_func(s + dt)
+
+        if method_flag == 'linear':
+            lambda_avg = (lambda_s + lambda_dt) / 2
+
+        elif method_flag == 'simpson':
+            mid_point = s + dt / 2
+            lambda_mid = lambda_func(mid_point)
+            integral = (dt / 6) * (lambda_s + 4 * lambda_mid + lambda_dt)
+            lambda_avg = integral / dt
+
+
+        elif method_flag == 'quad':
+            lambda_avg = quad(lambda_func, s, s + dt)[0] / dt
+
+        delta_t = -np.log(u) / lambda_avg
+        return present_time + delta_t
+
 
     def interarrival_inverse_cdf(self, current_state, present_time):
         pass
