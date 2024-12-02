@@ -28,7 +28,7 @@ class BPM3pProcess(GPP):
             raise ModelParametersException('BPM-3p rho parameter must be a positive number')
         return gamma, beta, rho
 
-    def interarrival_inverse_cdf(self, k, s):
+    def generate_next_arrival_time(self, k, s):
         gamma, beta, rho = self.model_params
         return BPM3pProcess.numba_inverse_cdf(gamma, beta, rho, k, s)
 

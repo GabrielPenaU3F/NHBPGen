@@ -32,7 +32,7 @@ class FendickProcess(GPP):
             raise ModelParametersException('Fendick rho parameter must be a positive number')
         return gamma_per_rho, beta_per_rho, rho
 
-    def interarrival_inverse_cdf(self, k, s):
+    def generate_next_arrival_time(self, k, s):
         random = np.random.rand()
         gamma_per_rho, beta_per_rho, rho = self.model_params
         exponent = -gamma_per_rho/(beta_per_rho + gamma_per_rho*k)

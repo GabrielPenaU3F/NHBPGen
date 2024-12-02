@@ -16,19 +16,6 @@ class PenaYamadaProcess(GPP):
         frac = b * t / (2 * np.exp(b * t) - b * t - 1)
         return (b / gamma) * frac
 
-    def Kappa_t(self, t):
-        return self.Kappa_s_t(0, t)
-
-    def Kappa_s_t(self, s, t):
-        integrando = lambda x: self.kappa_t(x)
-        if np.isscalar(t):  # if t is a scalar
-            return quad(integrando, s, t)[0]
-        else:  # if t is an array
-            result = np.zeros_like(t, dtype=float)
-            for i, ti in enumerate(t):
-                result[i] = quad(integrando, s, ti)[0]
-            return result
-
     def determine_mandatory_parameters(self, *args, **kwargs):
         gamma, beta, b = args
         return gamma, beta, b
@@ -47,7 +34,3 @@ class PenaYamadaProcess(GPP):
         F_inverse = interp1d(F_values, t_values, bounds_error=False, fill_value="extrapolate")
         u = np.random.uniform(0, 1)
         return F_inverse(u).item()
-
-    def interarrival_inverse_cdf(self, current_state, present_time):
-        pass
-

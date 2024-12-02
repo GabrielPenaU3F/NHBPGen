@@ -13,7 +13,6 @@ class PolyaProcess(BPM3pProcess):
         gamma, beta = self.model_params[2:]
         return 1/(1 + gamma * t)
 
-
     def determine_mandatory_parameters(self, *args, **kwargs):
         gamma, beta, gamma = args
         return gamma, beta, gamma

@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABC
 
 import numpy as np
+from scipy.integrate import quad
 
 from domain.processes.nhbp import NHBP
 from exceptions import ModelParametersException
@@ -27,9 +28,16 @@ class GPP(NHBP, ABC):
     def kappa_t(self, t):
         pass
 
-    @abstractmethod
+    # Overwrite this in subclasses if closed formulae are available
     def Kappa_s_t(self, s, t):
-        pass
+        integrando = lambda x: self.kappa_t(x)
+        if np.isscalar(t):  # if t is a scalar
+            return quad(integrando, s, t)[0]
+        else:  # if t is an array
+            result = np.zeros_like(t, dtype=float)
+            for i, ti in enumerate(t):
+                result[i] = quad(integrando, s, ti)[0]
+            return result
 
     def F_t(self, k, s, t):
         gamma, beta = self.model_params[:2]
@@ -43,10 +51,6 @@ class GPP(NHBP, ABC):
         if not beta > 0:
             raise ModelParametersException('GPP beta parameter must be a positive number')
 
-
-    def generate_next_arrival_time(self, current_state, present_time):
-        return self.interarrival_inverse_cdf(current_state, present_time)
-
     @abstractmethod
-    def interarrival_inverse_cdf(self, current_state, present_time):
+    def generate_next_arrival_time(self, current_state, present_time):
         pass
