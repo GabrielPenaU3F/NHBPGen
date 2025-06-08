@@ -12,6 +12,10 @@ class YuleProcess(PureBirthProcess):
         a = self.model_params
         return a * k
 
+    def mean_value_function(self, k, t):
+        # Needs to be implemented
+        return None
+
     def determine_mandatory_parameters(self, *args, **kwargs):
         a = args[0]
         return a

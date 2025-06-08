@@ -22,7 +22,7 @@ t = np.arange(min_T, max_T, time_step)
 # np.savez_compressed('../../../simulation_data/noah_subdiff_averages_for_different_deltas.npz',
 #                     delta10=avgs_t_10, delta20=avgs_t_20, delta50=avgs_t_50, delta100=avgs_t_100)
 
-avgs_delta_data = np.load('../../../simulation_data/noah_subdiff_averages_for_different_deltas.npz')
+avgs_delta_data = np.load('../../../data/simulation_ensembles/noah_subdiff_averages_for_different_deltas.npz')
 avgs_t_10 = avgs_delta_data['delta10']
 avgs_t_20 = avgs_delta_data['delta20']
 avgs_t_50 = avgs_delta_data['delta50']

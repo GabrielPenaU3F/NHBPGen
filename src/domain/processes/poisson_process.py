@@ -26,3 +26,6 @@ class PoissonProcess(NHBP):
         if not lambda_ > 0:
             raise ModelParametersException('Poisson lambda parameter must be a positive number')
         return lambda_
+
+    def mean_value_function(self, t, lambda_):
+        return lambda_ * t

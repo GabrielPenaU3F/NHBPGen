@@ -1,3 +1,5 @@
+from os import path, getcwd
+
 import numpy as np
 
 def count_events_until_time(sample_path, time_marker):
@@ -12,3 +14,9 @@ def chunk_array(arr, chunk_size):
 
 def parse_observations(arrivals, time_markers, dtype='int64'):
     return np.array(np.searchsorted(arrivals, time_markers), dtype=dtype)
+
+def get_base_path():
+    current_path = getcwd()
+    parent_dir = path.split(current_path)[0]
+    base_path = path.split(parent_dir)[0]
+    return base_path

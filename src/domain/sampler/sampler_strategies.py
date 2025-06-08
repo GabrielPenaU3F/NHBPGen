@@ -58,8 +58,8 @@ class ObservationsSamplePathStrategy(SamplePathStrategy):
         ensemble = []
         time_markers = np.arange(0, time, time_step, dtype=dtype)
         for i in range(N):
+            print(f"Generating trajectory n={i + 1} ...")
             arrivals = model.generate_arrivals(time)
             sample_path = extra_functions.parse_observations(arrivals, time_markers)
             ensemble.append(sample_path)
-            print(f"Generating trajectory n={i + 1} ...")
         return np.array(ensemble)

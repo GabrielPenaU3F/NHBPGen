@@ -22,7 +22,7 @@ t = np.arange(min_T, max_T, time_step)
 # np.savez_compressed('../../../simulation_data/moses_subdiff_averages_for_different_deltas.npz',
 #                     delta1=avgs_t_10, delta2=avgs_t_20, delta5=avgs_t_50, delta10=avgs_t_100)
 # 
-avgs_delta_data = np.load('../../../simulation_data/moses_subdiff_averages_for_different_deltas.npz')
+avgs_delta_data = np.load('../../../data/simulation_ensembles/moses_subdiff_averages_for_different_deltas.npz')
 avgs_t_10 = avgs_delta_data['delta1']
 avgs_t_20 = avgs_delta_data['delta2']
 avgs_t_50 = avgs_delta_data['delta5']

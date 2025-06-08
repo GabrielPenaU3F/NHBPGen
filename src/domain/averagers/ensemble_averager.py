@@ -23,11 +23,11 @@ class EnsembleAverager:
 
         return strategy_class().calculate(ensemble)
 
-    def estimate_hurst(self, ensemble, T, time_step):
+    def estimate_hurst(self, ensemble):
         average = self.average(ensemble, average_type='sq')
-        t = np.linspace(0, T, int(T / time_step))
+        t = np.arange(0, len(average))
         log_t = np.log(t[1:])
-        log_avg = np.log(average[1:int(T / time_step)])
+        log_avg = np.log(average[1:])
         slope, intercept, r_value, p_value, std_err = linregress(log_t, log_avg)
         H = slope/2
         print(f'Hurst parameter: H={H}')

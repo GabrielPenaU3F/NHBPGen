@@ -1,4 +1,3 @@
-import numbers
 from abc import ABC, abstractmethod
 
 import numpy as np
@@ -16,7 +15,6 @@ class NHBP(ABC):
         self.initial_state = self.validate_initial_state(kwargs.get('initial_state'))
         mandatory_params = self.determine_mandatory_parameters(*args)
         self.model_params = self.validate_model_parameters(mandatory_params)
-
 
     @abstractmethod
     def intensity_function(self, k, t):

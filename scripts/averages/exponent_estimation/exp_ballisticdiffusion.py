@@ -7,17 +7,17 @@ ea = EnsembleAverager()
 eta = EnsembleTimeAverager()
 N = 1000
 T = 8000
-delta = 200
+delta = 100
 min_delta = 10
-time_step = 1
+max_delta = 200
 
 data = np.load('../../../test/test_data/test_ensemble_ballisticdif.npz')
 ensemble = data['ensemble'][0:N-1]
 
-H = ea.estimate_hurst(ensemble, T, time_step)
-M = eta.estimate_moses(ensemble, T, delta, time_step)
-L = eta.estimate_noah(ensemble, M, T, delta, time_step)
-J = eta.estimate_joseph(ensemble, min_delta, delta, time_step)
+H = ea.estimate_hurst(ensemble)
+M = eta.estimate_moses(ensemble, T, delta, t_asymp=(6000, 8000))
+L = eta.estimate_noah(ensemble, M, T, delta, t_asymp=(6000, 8000))
+J = eta.estimate_joseph(ensemble, min_delta, max_delta)
 #
 # summation = M+L+J-1
 # print(f'Summation: {summation}')

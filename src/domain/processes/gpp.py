@@ -2,6 +2,7 @@ from abc import abstractmethod, ABC
 
 import numpy as np
 from scipy.integrate import quad
+from scipy.special import gamma as Gam
 
 from domain.processes.nhbp import NHBP
 from exceptions import ModelParametersException
@@ -18,11 +19,41 @@ class GPP(NHBP, ABC):
         gamma, beta = self.slope, self.intercept
         return (beta + gamma * k) * self.kappa_t(t)
 
+    def log_likelihood(self, k, t):
+        k = np.asarray(k)
+        r = np.asarray(self.r())
+        p = self.p(t)
+
+        log_binom_part = np.zeros_like(k)
+        for i in range(len(k)):
+            print(f'Sample number {i}')
+            if k[i] > 0:
+                j = np.arange(k[i])
+                log_binom_part[i] = np.sum(np.log(r + j))
+            else:
+                log_binom_part[i] = 0.0  # this if k=0
+
+        log_fact_k = self.log_factorial(k)
+        log_probs = (log_binom_part - log_fact_k + r * np.log(1 - p) + k * np.log(p))
+        return np.sum(log_probs)
+
     def mean_value(self, t):
+        r = self.r()
+        p = self.p(t)
+        return self.initial_state + r * (1 - p) / p
+
+    def variance(self, t):
+        r = self.r()
+        p = self.p(t)
+        return r * (1 - p) / (p**2)
+
+    def r(self):
         gamma, beta = self.slope, self.intercept
-        r = beta/gamma
-        p = np.exp(-gamma * self.Kappa_s_t(0, t))
-        return r * (1 - p) / p
+        return beta/gamma
+
+    def p(self, t):
+        gamma = self.slope
+        return np.exp(-gamma * self.Kappa_s_t(0, t))
 
     @abstractmethod
     def kappa_t(self, t):
@@ -54,3 +85,27 @@ class GPP(NHBP, ABC):
     @abstractmethod
     def generate_next_arrival_time(self, current_state, present_time):
         pass
+
+    def log_factorial(self, k):
+        k = np.asarray(k)
+        result = np.zeros_like(k, dtype=np.float64)
+
+        # Mask for small values
+        small_k = k < 20
+        large_k = ~small_k
+
+        # Exact
+        if np.any(small_k):
+            from scipy.special import gammaln
+            result[small_k] = gammaln(k[small_k] + 1)
+
+        # Stirling approximation
+        if np.any(large_k):
+            k_large = k[large_k].astype(np.float64)
+            result[large_k] = (
+                    k_large * np.log(k_large)
+                    - k_large
+                    + 0.5 * np.log(2 * np.pi * k_large)
+            )
+
+        return result

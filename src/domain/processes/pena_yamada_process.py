@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.integrate import quad
 from scipy.interpolate import interp1d
 
 from domain.processes.gpp import GPP
